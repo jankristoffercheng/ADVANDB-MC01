@@ -21,16 +21,23 @@ public class Views extends AbstractDAO{
 	public Views() {
 		super();
 	}
-	
+/*******************************************START QUERY 1********************************************************/	
 	@Override
 	public ArrayList<Query> query1(int nTimes) {
-		Connection connection = MySQLConnector.getConnection();
-		String query = 
-				"SELECT id, memno, age, age_yr, birth_date, sex, educind, gradel, "
-									+ "ynotsch, ynotsch_o, reln, jobind, occup "
-				+ "FROM hpq_mem "
-				+ "WHERE age_yr >= 15 AND age_yr <=30 AND reln = 1";
 		
+		MySQLConnector.executeStatement("CREATE TABLE query1view (id INT, memno INT, age_yr INT, birth_date VARCHAR(45), "
+				                                               + "sex INT, educind INT, gradel INT, ynotsch INT, "
+				                                               + "ynotsch_o VARCHAR(255), reln INT, jobind INT, "
+				                                               + "occup VARCHAR(255));");
+		MySQLConnector.executeStatement("INSERT INTO query1view "
+				                      + "SELECT id, memno, age_yr, birth_date, sex, educind, gradel, ynotsch, "
+				                      + "ynotsch_o, reln, jobind, occup "
+				                      + "FROM hpq_mem "
+				                      + "WHERE age_yr BETWEEN 15 AND 30 AND reln = 1;");
+		
+		Connection connection = MySQLConnector.getConnection();		
+		String query = "SELECT * FROM query1view;";
+	
 		ArrayList<Query> results = new ArrayList<Query>();
 		PreparedStatement ps;
 		ResultSet rs;
@@ -60,18 +67,28 @@ public class Views extends AbstractDAO{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+		MySQLConnector.executeStatement("DROP TABLE query1view;");
 		return results;
 	}
 	
 	public ArrayList<Query> query1(int nTimes, boolean isStudying) {
 	
+		MySQLConnector.executeStatement("CREATE TABLE query1view (id INT, memno INT, age_yr INT, birth_date VARCHAR(45), "
+												                + "sex INT, educind INT, gradel INT, ynotsch INT, "
+												                + "ynotsch_o VARCHAR(255), reln INT, jobind INT, "
+												                + "occup VARCHAR(255));");
+		MySQLConnector.executeStatement("INSERT INTO query1view "
+										+ "SELECT id, memno, age_yr, birth_date, sex, educind, gradel, ynotsch, "
+										+ "ynotsch_o, reln, jobind, occup "
+										+ "FROM hpq_mem "
+										+ "WHERE age_yr BETWEEN 15 AND 30 AND reln = 1;");
+
 		Connection connection = MySQLConnector.getConnection();
 		String query = 
-				"SELECT id, memno, age, age_yr, birth_date, sex, educind, gradel, "
-									+ "ynotsch, ynotsch_o, reln, jobind, occup "
-				+ "FROM hpq_mem "
-				+ "WHERE age_yr >= 15 AND age_yr <=30 AND reln = 1 "
-				+ "AND educind = " + ((isStudying) ? "1" : "2");
+				   "SELECT * "
+				 + "FROM query1view "
+				 + "WHERE educind = " + ((isStudying) ? "1" : "2");
 		
 		ArrayList<Query> results = new ArrayList<Query>();
 		PreparedStatement ps;
@@ -102,20 +119,21 @@ public class Views extends AbstractDAO{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		MySQLConnector.executeStatement("DROP TABLE query1view;");
 		return results;
 	}
-	
+/*********************************************END QUERY 1********************************************************/
+/*******************************************START QUERY 2********************************************************/	
+					
 	@Override
 	public ArrayList<Query> query2(int nTimes) {
 		MySQLConnector.executeStatement("CREATE TABLE query2view( occup varchar(255) );");
-		
-		String insert = "INSERT INTO query2view "
-						+ "SELECT occup "
-						+ "FROM hpq_mem "
-						+ "WHERE age_yr >= 15 AND age_yr <= 30 "
-						+ "AND reln = 1)";
-		
-		MySQLConnector.executeStatement(insert);
+		MySQLConnector.executeStatement("INSERT INTO query2view "
+										+ "SELECT occup "
+										+ "FROM hpq_mem "
+										+ "WHERE age_yr BETWEEN 15 AND 30 "
+										+ "AND reln = 1 "
+										+ "AND educind = 2;");
 		
 		Connection connection = MySQLConnector.getConnection();
 		String query = 
@@ -181,24 +199,101 @@ public class Views extends AbstractDAO{
 		MySQLConnector.executeStatement("DROP TABLE query2view;");
 		return results;
 	}
-
+/*********************************************END QUERY 2********************************************************/
+/*******************************************START QUERY 3********************************************************/	
+				
 	@Override
 	public ArrayList<Query> query3(int nTimes) {
-		// TODO Auto-generated method stub
-		return null;
+		MySQLConnector.executeStatement("CREATE TABLE query3view (id int, monthly_income float, mem_count int);");
+		MySQLConnector.executeStatement("INSERT INTO query3view	"
+										+ "SELECT H.id AS houshold, H.totin/12 AS monthly_income, T.mem_count "
+										+ "FROM hpq_hh H, hpq_mem M, (SELECT H.id, COUNT(M.memno) AS mem_count "
+																   + "FROM hpq_hh H, hpq_mem M "
+																   + "WHERE H.id = M.id "
+																   + "GROUP BY H.id) T	"
+										+ "WHERE H.id = M.id AND M.id = T.id "
+										+ "AND M.age_yr BETWEEN 15 AND 30 "
+										+ "AND M.reln = 1 "
+										+ "GROUP BY H.id;");
+		
+		Connection connection = MySQLConnector.getConnection();
+		String query = 
+				"SELECT id, monthly_income, mem_count"
+			   + "FROM query3view;";
+		
+		ArrayList<Query> results = new ArrayList<Query>();
+		PreparedStatement ps;
+		ResultSet rs;
+		executor.reset();
+		try {
+			ps = connection.prepareStatement(query);
+			rs = executor.executeQuery(nTimes, ps);
+			while(rs.next()) {
+				Query3 result = new Query3(rs.getInt(1), rs.getDouble(2), rs.getInt(3));
+				results.add(result);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		MySQLConnector.executeStatement("DROP TABLE query3view;");
+		return results;
 	}
 	
 	public ArrayList<Query> query3(int nTimes, int memno, double lowerBracket, double higherBracket) {
-		// TODO Auto-generated method stub
-		return null;
+		MySQLConnector.executeStatement("CREATE TABLE query3view (id int, monthly_income float, mem_count int);");
+		MySQLConnector.executeStatement("INSERT INTO query3view	"
+										+ "SELECT H.id AS houshold, H.totin/12 AS monthly_income, T.mem_count "
+										+ "FROM hpq_hh H, hpq_mem M, (SELECT H.id, COUNT(M.memno) AS mem_count "
+																   + "FROM hpq_hh H, hpq_mem M "
+																   + "WHERE H.id = M.id "
+																   + "GROUP BY H.id) T	"
+										+ "WHERE H.id = M.id AND M.id = T.id "
+										+ "AND M.age_yr BETWEEN 15 AND 30 "
+										+ "AND M.reln = 1 "
+										+ "GROUP BY H.id;");
+		
+		Connection connection = MySQLConnector.getConnection();
+		String query = 
+				"SELECT id, monthly_income, mem_count"
+			   + "FROM query3view "
+			   + "WHERE monthly_income BETWEEN " + lowerBracket +" AND "+higherBracket+" "
+			   + "AND mem_count = "+memno+ ";";
+		
+		ArrayList<Query> results = new ArrayList<Query>();
+		PreparedStatement ps;
+		ResultSet rs;
+		executor.reset();
+		try {
+			ps = connection.prepareStatement(query);
+			rs = executor.executeQuery(nTimes, ps);
+			while(rs.next()) {
+				Query3 result = new Query3(rs.getInt(1), rs.getDouble(2), rs.getInt(3));
+				results.add(result);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		MySQLConnector.executeStatement("DROP TABLE query3view;");
+		return results;
 	}
-
+/*********************************************END QUERY 3********************************************************/
+/*******************************************START QUERY 4********************************************************/	
+			
 	@Override
 	public ArrayList<Query> query4(int nTimes) {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
+	
+	public ArrayList<Query> query4(int nTimes, int isEmployed) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+/*********************************************END QUERY 4********************************************************/
+/*******************************************START QUERY 5********************************************************/	
+				
 	@Override
 	public ArrayList<Query> query5(int nTimes) {
 		// TODO Auto-generated method stub
@@ -209,7 +304,9 @@ public class Views extends AbstractDAO{
 		// TODO Auto-generated method stub
 		return null;
 	}
-
+/*********************************************END QUERY 5********************************************************/
+/*******************************************START QUERY 6********************************************************/	
+			
 	@Override
 	public ArrayList<Query> query6(int nTimes) {
 		// TODO Auto-generated method stub
@@ -220,9 +317,16 @@ public class Views extends AbstractDAO{
 		// TODO Auto-generated method stub
 		return null;
 	}
-
+/*********************************************END QUERY 6********************************************************/
+/*******************************************START QUERY 7********************************************************/	
+				
 	@Override
 	public ArrayList<Query> query7(int nTimes) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	public ArrayList<Query> query7(int nTimes, double lowerBracket, double higherBracket) {
 		// TODO Auto-generated method stub
 		return null;
 	}

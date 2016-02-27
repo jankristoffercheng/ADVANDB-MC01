@@ -21,7 +21,7 @@ public class Original extends AbstractDAO{
 	public Original() {
 		super();
 	}
-	
+/*******************************************START QUERY 1********************************************************/	
 	@Override
 	public ArrayList<Query> query1(int nTimes) {
 		Connection connection = MySQLConnector.getConnection();
@@ -103,7 +103,8 @@ public class Original extends AbstractDAO{
 		}
 		return results;
 	}
-	
+/*********************************************END QUERY 1********************************************************/
+/*******************************************START QUERY 2********************************************************/				
 	@Override
 	public ArrayList<Query> query2(int nTimes) {
 		Connection connection = MySQLConnector.getConnection();
@@ -163,12 +164,14 @@ public class Original extends AbstractDAO{
 		}
 		return results;
 	}
-	
+/*********************************************END QUERY 2********************************************************/
+/*******************************************START QUERY 3********************************************************/	
+			
 	@Override
 	public ArrayList<Query> query3(int nTimes) {
 		Connection connection = MySQLConnector.getConnection();
 		String query = 
-				"SELECT *, M.id AS houshold, H.totin/12 AS monthly_income, COUNT(M.memno) AS mem_count "
+				"SELECT *, M.id AS household, H.totin/12 AS monthly_income, COUNT(M.memno) AS mem_count "
 				+ "FROM hpq_hh H, hpq_mem M "
 				+ "WHERE H.id = M.id "
 				+ "AND M.id IN (SELECT M.id "
@@ -196,7 +199,7 @@ public class Original extends AbstractDAO{
 	public ArrayList<Query> query3(int nTimes, int memno, double lowerBracket, double higherBracket) {
 		Connection connection = MySQLConnector.getConnection();
 		String query = 
-				"SELECT M.id AS houshold, H.totin/12 AS monthly_income, COUNT(M.memno) AS mem_count "
+				"SELECT *, M.id AS household, H.totin/12 AS monthly_income, COUNT(M.memno) AS mem_count "
 				+ "FROM hpq_hh H, hpq_mem M "
 				+ "WHERE H.id = M.id "
 				+ "AND M.id IN (SELECT M.id "
@@ -213,7 +216,7 @@ public class Original extends AbstractDAO{
 			ps = connection.prepareStatement(query);
 			rs = executor.executeQuery(nTimes, ps);
 			while(rs.next()) {
-				Query3 result = new Query3(rs.getInt(1), rs.getInt(2), rs.getInt(3));
+				Query3 result = new Query3(rs.getInt("household"), rs.getDouble("monthly_income"), rs.getInt("mem_count"));
 				results.add(result);
 			}
 		} catch (SQLException e) {
@@ -222,7 +225,9 @@ public class Original extends AbstractDAO{
 		}
 		return results;
 	}
-
+/*********************************************END QUERY 3********************************************************/
+/*******************************************START QUERY 4********************************************************/	
+	
 	@Override
 	public ArrayList<Query> query4(int nTimes) {
 		Connection connection = MySQLConnector.getConnection();
@@ -291,6 +296,9 @@ public class Original extends AbstractDAO{
 		return results;
 	}
 	
+/*********************************************END QUERY 4********************************************************/
+/*******************************************START QUERY 5********************************************************/	
+			
 	@Override
 	public ArrayList<Query> query5(int nTimes) {
 		Connection connection = MySQLConnector.getConnection();
@@ -299,7 +307,7 @@ public class Original extends AbstractDAO{
 				+ "FROM hpq_aquani A, hpq_hh H, query1 Q "
 				+ "WHERE Q.id = H.id AND Q.id = A.hpq_hh_id "
 				+ "AND aquani_vol < (SELECT AVG(aquani_vol) "
-									+ "FROM hpq_aquani)"
+								  + "FROM hpq_aquani)"
 				+ "GROUP BY H.mun, H.id;";
 		ArrayList<Query> results = new ArrayList<Query>();
 		PreparedStatement ps;
@@ -320,15 +328,38 @@ public class Original extends AbstractDAO{
 	}
 
 	public ArrayList<Query> query5(int nTimes, String fishType) {
+		
+		fishType = fishType.toLowerCase().trim();
+		int aquanitype = 6;
+		
+		if(fishType.equals("tilapia")) {
+			aquanitype = 1;
+		} else if(fishType.equals("milkfish")) {
+			aquanitype = 2;
+		} else if(fishType.equals("catfish")) {
+			aquanitype = 3;
+		} else if(fishType.equals("mudfish")) {
+			aquanitype = 4;
+		} else if(fishType.equals("carp")) {
+			aquanitype = 5;
+		}
+		
 		Connection connection = MySQLConnector.getConnection();
 		String query = 
-				"SELECT *, H.mun AS municipality, H.id AS household, A.aquanitype, A.aquanitype_o, A.aquani_vol "
-				+ "FROM hpq_aquani A, hpq_hh H, query1 Q "
+				 "SELECT H.mun AS municipality, H.id AS household, A.aquanitype, A.aquanitype_o, A.aquani_vol "
+				+ "FROM hpq_aquani A, hpq_hh H, hpq_mem Q "
 				+ "WHERE Q.id = H.id AND Q.id = A.hpq_hh_id "
-				+ "AND aquanitype_o LIKE '%" + fishType + "%' "
+				+ "AND Q.age_yr BETWEEN 15 AND 30 "
+				+ "AND Q.reln = 1 "
+				+ "AND " + ((aquanitype == 6)? 
+						    "aquanitype = 6 AND aquanitype_o LIKE '%" + fishType + "%' " :
+					        "aquanitype = " + aquanitype + " ") 
 				+ "AND aquani_vol < (SELECT AVG(aquani_vol) "
-									+ "FROM hpq_aquani "
-									+ "WHERE aquanitype_o LIKE '%" + fishType + "%')"
+								  + "FROM hpq_aquani "
+								  + "WHERE " 
+								  + ((aquanitype == 6)? 
+								     "aquanitype = 6 AND aquanitype_o LIKE '%" + fishType + "%' )" :
+									 "aquanitype = " + aquanitype + " )") 
 				+ "GROUP BY H.mun, H.id;";
 		ArrayList<Query> results = new ArrayList<Query>();
 		PreparedStatement ps;
@@ -347,7 +378,10 @@ public class Original extends AbstractDAO{
 		}
 		return results;
 	}
-
+	
+/*********************************************END QUERY 5********************************************************/
+/*******************************************START QUERY 6********************************************************/	
+		
 	@Override
 	public ArrayList<Query> query6(int nTimes) {
 		Connection connection = MySQLConnector.getConnection();
@@ -377,15 +411,33 @@ public class Original extends AbstractDAO{
 	}
 	
 	public ArrayList<Query> query6(int nTimes, String cropType) {
+		
+		cropType = cropType.toLowerCase().trim();
+		int nCroptype = 4;
+		if(cropType.equals("sugar cane")) {
+			nCroptype = 1;
+		} else if(cropType.equals("palay")) {
+			nCroptype = 2;
+		} else if(cropType.equals("corn")) {
+			nCroptype = 3;
+		}
+		
 		Connection connection = MySQLConnector.getConnection();
 		String query = 
-				"SELECT *, H.mun AS municipality, H.id AS household, C.croptype, C.croptype_o, C.crop_vol "
-				+ "FROM hpq_crop C, hpq_hh H, query1 Q "
+				  "SELECT H.mun AS municipality, H.id AS household, C.croptype, C.croptype_o, C.crop_vol "
+				+ "FROM hpq_crop C, hpq_hh H, hpq_mem Q "
 				+ "WHERE Q.id = H.id AND Q.id = C.hpq_hh_id "
-				+ "AND croptype_o LIKE '%" + cropType + "%' "
+				+ "AND Q.age_yr BETWEEN 15 AND 30 "
+				+ "AND Q.reln = 1 "
+				+ "AND " + ((nCroptype == 4)? 
+						    "croptype = 4 AND croptype_o LIKE '%" + cropType + "%' " :
+					        "croptype = " + nCroptype + " ") 
 				+ "AND crop_vol < (SELECT AVG(crop_vol) "
-								+ "FROM hpq_crop "
-								+ "WHERE croptype_o LIKE '%" + cropType + "%')"
+								  + "FROM hpq_crop "
+								  + "WHERE " 
+								  + ((nCroptype == 4)? 
+								     "croptype = 4 AND croptype_o LIKE '%" + cropType + "%' )" :
+									 "croptype = " + nCroptype + " ) ") 
 				+ "GROUP BY H.mun, H.id;";
 		ArrayList<Query> results = new ArrayList<Query>();
 		PreparedStatement ps;
@@ -404,7 +456,10 @@ public class Original extends AbstractDAO{
 		}
 		return results;
 	}
-
+	
+/*********************************************END QUERY 6********************************************************/
+/*******************************************START QUERY 7********************************************************/	
+		
 	@Override
 	public ArrayList<Query> query7(int nTimes) {
 		// TODO Auto-generated method stub
@@ -418,6 +473,7 @@ public class Original extends AbstractDAO{
 				+ "AND M.age_yr BETWEEN 15 AND 30 "
 				+ "AND M.reln = 1 "
 				+ "GROUP BY H.mun, H.id;";
+		
 		ArrayList<Query> results = new ArrayList<Query>();
 		PreparedStatement ps;
 		ResultSet rs;
@@ -450,7 +506,7 @@ public class Original extends AbstractDAO{
 				+ "AND M.age_yr BETWEEN 15 AND 30 "
 				+ "AND M.reln = 1 "
 				+ "GROUP BY H.mun, H.id "
-				+ "HAVING monthly_income BETWEEN " + lowerBracket + " AND " + higherBracket;
+				+ "HAVING monthly_income BETWEEN " + lowerBracket + " AND " + higherBracket+ ";";
 		ArrayList<Query> results = new ArrayList<Query>();
 		PreparedStatement ps;
 		ResultSet rs;

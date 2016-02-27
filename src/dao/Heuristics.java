@@ -21,7 +21,7 @@ public class Heuristics extends AbstractDAO{
 	public Heuristics() {
 		super();
 	}
-	
+/*******************************************START QUERY 1********************************************************/		
 	@Override
 	public ArrayList<Query> query1(int nTimes) {
 		Connection connection = MySQLConnector.getConnection();
@@ -103,7 +103,8 @@ public class Heuristics extends AbstractDAO{
 		}
 		return results;
 	}
-	
+/*********************************************END QUERY 1********************************************************/
+/*******************************************START QUERY 2********************************************************/	
 	@Override
 	public ArrayList<Query> query2(int nTimes) {
 		Connection connection = MySQLConnector.getConnection();
@@ -162,7 +163,8 @@ public class Heuristics extends AbstractDAO{
 		}
 		return results;
 	}
-
+/*********************************************END QUERY 2********************************************************/
+/*******************************************START QUERY 3********************************************************/	
 	@Override
 	public ArrayList<Query> query3(int nTimes) {
 		Connection connection = MySQLConnector.getConnection();
@@ -235,7 +237,8 @@ public class Heuristics extends AbstractDAO{
 		}
 		return results;
 	}
-
+/*********************************************END QUERY 3********************************************************/
+/*******************************************START QUERY 4********************************************************/	
 	@Override
 	public ArrayList<Query> query4(int nTimes) {
 		Connection connection = MySQLConnector.getConnection();
@@ -312,7 +315,8 @@ public class Heuristics extends AbstractDAO{
 		}
 		return results;
 	}
-	
+/*********************************************END QUERY 4********************************************************/
+/*******************************************START QUERY 5********************************************************/	
 	@Override
 	public ArrayList<Query> query5(int nTimes) {
 		Connection connection = MySQLConnector.getConnection();
@@ -322,7 +326,7 @@ public class Heuristics extends AbstractDAO{
 				+ "FROM hpq_hh H "
 				+ "INNER JOIN (SELECT hpq_hh_id, aquanitype, aquanitype_o, aquani_vol "
 							+ "FROM hpq_aquani "
-							+ "AND aquani_vol < (SELECT AVG(aquani_vol) "
+							+ "WHERE aquani_vol < (SELECT AVG(aquani_vol) "
 												+ "FROM hpq_aquani)) A "
 				+ "ON H.id = A.hpq_hh_id "
 				+ "INNER JOIN (SELECT id "
@@ -360,23 +364,27 @@ public class Heuristics extends AbstractDAO{
 			aquanitype = 2;
 		} else if(fishType.equals("catfish")) {
 			aquanitype = 3;
-		} else if(fishType.equals("mudship")) {
+		} else if(fishType.equals("mudfish")) {
 			aquanitype = 4;
 		} else if(fishType.equals("carp")) {
 			aquanitype = 5;
 		}
 		
 		String query = 
-				"SELECT H.mun, H.id, aquanitype, aquanitype, aquani_vol "
+				"SELECT H.mun, H.id, aquanitype, aquanitype_o, aquani_vol "
 				+ "FROM hpq_hh H "
 				+ "INNER JOIN (SELECT hpq_hh_id, aquanitype, aquanitype_o, aquani_vol "
 							+ "FROM hpq_aquani "
-							+ "WHERE aquanitype_o LIKE '%" + fishType + "%' "
-							+ ((aquanitype == 6) ? "AND aquanitype = 6 " : "OR aquanitype = " + aquanitype + " ")
+							+ "WHERE "
+							+ ((aquanitype == 6) ? 
+							  "aquanitype = 6 AND aquanitype_o LIKE '%" + fishType + "%' " : 
+							  "aquanitype = " + aquanitype + " ")
 							+ "AND aquani_vol < (SELECT AVG(aquani_vol) "
 												+ "FROM hpq_aquani "
-												+ "WHERE aquanitype_o LIKE '%" + fishType + "%' "
-												+ "AND aquanitype = " + aquanitype +")) A "
+												+ "WHERE "
+												+ ((aquanitype == 6) ? 
+												   "aquanitype = 6 AND aquanitype_o LIKE '%" + fishType + "%' )) A " : 
+												   "aquanitype = " + aquanitype + " )) A ")
 				+ "ON H.id = A.hpq_hh_id "
 				+ "INNER JOIN (SELECT id "
 							+ "FROM hpq_mem "
@@ -401,21 +409,169 @@ public class Heuristics extends AbstractDAO{
 		}
 		return results;
 	}
-	
+/*********************************************END QUERY 5********************************************************/	
+/*********************************************START QUERY 6******************************************************/	
 	@Override
 	public ArrayList<Query> query6(int nTimes) {
-		// TODO Auto-generated method stub
-		return null;
+		Connection connection = MySQLConnector.getConnection();
+
+		String query = 
+				"SELECT H.mun, H.id, croptype, croptype_o, crop_vol "
+				+ "FROM hpq_hh H "
+				+ "INNER JOIN (SELECT hpq_hh_id, croptype, croptype_o, crop_vol "
+							+ "FROM hpq_crop "
+							+ "WHERE crop_vol < (SELECT AVG(crop_vol) "
+												+ "FROM hpq_crop)) C "
+				+ "ON H.id = C.hpq_hh_id "
+				+ "INNER JOIN (SELECT id "
+							+ "FROM hpq_mem "
+							+ "WHERE age_yr BETWEEN 15 AND 30 "
+							+ "AND reln = 1) M "
+				+ "ON H.id = M.id "
+				+ "GROUP BY H.mun, H.id;";
+		ArrayList<Query> results = new ArrayList<Query>();
+		PreparedStatement ps;
+		ResultSet rs;
+		executor.reset();
+		try {
+			ps = connection.prepareStatement(query);
+			rs = executor.executeQuery(nTimes, ps);
+			while(rs.next()) {
+				Query6 result = new Query6(rs.getInt(1), rs.getInt(2), rs.getInt(3), rs.getString(4), rs.getInt(5));
+				results.add(result);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return results;
 	}
 
 	public ArrayList<Query> query6(int nTimes, String cropType) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+		Connection connection = MySQLConnector.getConnection();
 
+		cropType = cropType.toLowerCase().trim();
+		int nCroptype = 4;
+		if(cropType.equals("sugar cane")) {
+			nCroptype = 1;
+		} else if(cropType.equals("palay")) {
+			nCroptype = 2;
+		} else if(cropType.equals("corn")) {
+			nCroptype = 3;
+		}
+		
+		String query = 
+				"SELECT H.mun, H.id, croptype, croptype_o, crop_vol "
+				+ "FROM hpq_hh H "
+				+ "INNER JOIN (SELECT hpq_hh_id, croptype, croptype_o, crop_vol "
+							+ "FROM hpq_crop "
+							+ "WHERE "
+							+ ((nCroptype == 4) ? 
+							  "croptype = 4 AND croptype_o LIKE '%" + cropType + "%' " : 
+							  "croptype = " + cropType + " ")
+							+ "AND crop_vol < (SELECT AVG(crop_vol) "
+												+ "FROM hpq_crop "
+												+ "WHERE "
+												+ ((nCroptype == 4) ? 
+												   "croptype = 4 AND croptype_o LIKE '%" + cropType + "%' ))C " : 
+												   "croptype = " + cropType + " )) C ")
+				+ "ON H.id = C.hpq_hh_id "
+				+ "INNER JOIN (SELECT id "
+							+ "FROM hpq_mem "
+							+ "WHERE age_yr BETWEEN 15 AND 30 "
+							+ "AND reln = 1) M "
+				+ "ON H.id = M.id "
+				+ "GROUP BY H.mun, H.id;";
+		ArrayList<Query> results = new ArrayList<Query>();
+		PreparedStatement ps;
+		ResultSet rs;
+		executor.reset();
+		try {
+			ps = connection.prepareStatement(query);
+			rs = executor.executeQuery(nTimes, ps);
+			while(rs.next()) {
+				Query6 result = new Query6(rs.getInt(1), rs.getInt(2), rs.getInt(3), rs.getString(4), rs.getInt(5));
+				results.add(result);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return results;
+	}
+/*********************************************END QUERY 6******************************************************/	
+/*********************************************START QUERY 7******************************************************/
 	public ArrayList<Query> query7(int nTimes) {
-		// TODO Auto-generated method stub
-		return null;
+		Connection connection = MySQLConnector.getConnection();
+		String query = 
+				"SELECT H.mun, H.id, aquanitype, aquanitype_o, aquani_vol, croptype, croptype_o, crop_vol, totin/12 AS monthly_income "
+				+ "FROM hpq_hh H "
+				+ "INNER JOIN hpq_aquani A "
+				+ "ON H.id = A.hpq_hh_id "
+				+ "INNER JOIN hpq_crop C "
+				+ "ON H.id = C.hpq_hh_id "
+				+ "INNER JOIN (SELECT id "
+							+ "FROM hpq_mem "
+							+ "WHERE age_yr BETWEEN 15 AND 30 "
+							+ "AND reln = 1) M "
+				+ "ON H.id = M.id "
+				+ "GROUP BY H.mun, H.id;";
+		
+		ArrayList<Query> results = new ArrayList<Query>();
+		PreparedStatement ps;
+		ResultSet rs;
+		executor.reset();
+		try {
+			ps = connection.prepareStatement(query);
+			rs = executor.executeQuery(nTimes, ps);
+			while(rs.next()) {
+				Query7 result = new Query7(rs.getInt(1), rs.getInt(2), rs.getInt(3), rs.getString(4), 
+		                                   rs.getInt(5), rs.getInt(6), rs.getString(7), rs.getInt(8), 
+		                                   rs.getDouble(9));
+				results.add(result);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return results;
+	}
+	
+	public ArrayList<Query> query7(int nTimes, double lowerBracket, double higherBracket) {
+		Connection connection = MySQLConnector.getConnection();
+		String query = 
+				"SELECT H.mun, H.id, aquanitype, aquanitype_o, aquani_vol, croptype, croptype_o, crop_vol, totin/12 AS monthly_income "
+				+ "FROM hpq_hh H "
+				+ "INNER JOIN hpq_aquani A "
+				+ "ON H.id = A.hpq_hh_id "
+				+ "INNER JOIN hpq_crop C "
+				+ "ON H.id = C.hpq_hh_id "
+				+ "INNER JOIN (SELECT id "
+							+ "FROM hpq_mem "
+							+ "WHERE age_yr BETWEEN 15 AND 30 "
+							+ "AND reln = 1) M "
+				+ "ON H.id = M.id "
+				+ "GROUP BY H.mun, H.id "
+				+ "HAVING monthly_income BETWEEN "+lowerBracket+" AND "+higherBracket+";";
+		
+		ArrayList<Query> results = new ArrayList<Query>();
+		PreparedStatement ps;
+		ResultSet rs;
+		executor.reset();
+		try {
+			ps = connection.prepareStatement(query);
+			rs = executor.executeQuery(nTimes, ps);
+			while(rs.next()) {
+				Query7 result = new Query7(rs.getInt(1), rs.getInt(2), rs.getInt(3), rs.getString(4), 
+                                           rs.getInt(5), rs.getInt(6), rs.getString(7), rs.getInt(8), 
+                                           rs.getDouble(9));
+				results.add(result);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return results;
 	}
 	
 }

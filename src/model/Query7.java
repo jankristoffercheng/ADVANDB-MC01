@@ -21,10 +21,10 @@ public class Query7 implements Query{
 	private int croptype;
 	private String croptype_o;
 	private int crop_vol;
-	private int monthly_income;
+	private double monthly_income;
 	
 	public Query7(int mun, int household, int aquanitype, String aquanitype_o, int aquani_vol, int croptype,
-			String croptype_o, int crop_vol, int monthly_income) {
+			String croptype_o, int crop_vol, double monthly_income) {
 		super();
 		this.mun = mun;
 		this.household = household;
@@ -84,10 +84,10 @@ public class Query7 implements Query{
 	public void setCrop_vol(int crop_vol) {
 		this.crop_vol = crop_vol;
 	}
-	public int getMonthly_income() {
+	public double getMonthly_income() {
 		return monthly_income;
 	}
-	public void setMonthly_income(int monthly_income) {
+	public void setMonthly_income(double monthly_income) {
 		this.monthly_income = monthly_income;
 	}
 	@Override
