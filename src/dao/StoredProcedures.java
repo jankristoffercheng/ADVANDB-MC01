@@ -124,7 +124,7 @@ public class StoredProcedures extends AbstractDAO{
 		return null;
 	}
 	
-	public ArrayList<Query> query2(int nTimes, int studying) {
+	public ArrayList<Query> query2(int nTimes, boolean isStudying) {
 		
 		MySQLConnector.executeStatement(
 				"CREATE PROCEDURE getQuery2(IN isStudying INT) "
@@ -149,7 +149,7 @@ public class StoredProcedures extends AbstractDAO{
 		
 		Connection connection = MySQLConnector.getConnection();
 		String query = 
-				"CALL getQuery2(" + studying + ")";
+				"CALL getQuery2(" + ")";
 		
 		ArrayList<Query> results = new ArrayList<Query>();
 		PreparedStatement ps;
