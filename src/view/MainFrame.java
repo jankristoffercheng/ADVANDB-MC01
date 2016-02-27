@@ -27,7 +27,7 @@ public class MainFrame extends JFrame {
 		gridPanel = new JPanel(new GridLayout(7,5));//Set layout of Panel
 		initializeButtonArray(); //Start initializing buttons and assigning thme to the grid
 		//Set grid to content pane
-		this.add(mainPanel);
+		this.add(gridPanel);
 		setVisible(true);
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);

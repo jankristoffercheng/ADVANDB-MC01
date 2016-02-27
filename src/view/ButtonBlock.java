@@ -3,6 +3,7 @@ package view;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 import javax.swing.JButton;
 
@@ -21,6 +22,14 @@ public class ButtonBlock extends JButton {
 	private String name;
 	private Point location;	
 	private String command;
+	private FilterFrameQuery1 filterFrameQuery1;
+	private FilterFrameQuery2 filterFrameQuery2;
+	private FilterFrameQuery3 filterFrameQuery3;
+	private FilterFrameQuery4 filterFrameQuery4;
+	private FilterFrameQuery5 filterFrameQuery5;
+	private FilterFrameQuery6 filterFrameQuery6;
+	private FilterFrameQuery7 filterFrameQuery7;
+	
 	
 	//Set Button Block's Coordinates
 	public ButtonBlock(int x, int y)
@@ -58,166 +67,174 @@ public class ButtonBlock extends JButton {
 	{
 		if(query.contains("query1")) 
 		{
+			
 			if(query.contains("original"))
 			{
-				ViewController.getInstance().getQuery1(1);
+				filterFrameQuery1 = new FilterFrameQuery1(1);
 			}
 			else if(query.contains("heuristics"))
 			{
-				ViewController.getInstance().getQuery1(2);
+				filterFrameQuery1 = new FilterFrameQuery1(2);
 			}
 			else if(query.contains("views"))
 			{
-				ViewController.getInstance().getQuery1(3);
+				filterFrameQuery1 = new FilterFrameQuery1(3);
 			}
 			else if(query.contains("indexed"))
 			{
-				ViewController.getInstance().getQuery1(4);
+				filterFrameQuery1 = new FilterFrameQuery1(4);
 			}
 			else
 			{
-				ViewController.getInstance().getQuery1(5);
+				filterFrameQuery1 = new FilterFrameQuery1(5);
 			}
 		}
+	
 		else if(query.contains("query2"))
 		{
 			if(query.contains("original"))
 			{
-				ViewController.getInstance().getQuery2(1);
+				filterFrameQuery2 = new FilterFrameQuery2(1);
 			}
 			else if(query.contains("heuristics"))
 			{
-				ViewController.getInstance().getQuery2(2);
+				filterFrameQuery2 = new FilterFrameQuery2(2);
 			}
 			else if(query.contains("views"))
 			{
-				ViewController.getInstance().getQuery2(3);
+				filterFrameQuery2 = new FilterFrameQuery2(3);
 			}
 			else if(query.contains("indexed"))
 			{
-				ViewController.getInstance().getQuery2(4);
+				filterFrameQuery2 = new FilterFrameQuery2(4);
 			}
 			else
 			{
-				ViewController.getInstance().getQuery2(5);
+				filterFrameQuery2 = new FilterFrameQuery2(5);
 			}
 		}
 		else if(query.contains("query3"))
 		{
+			
 			if(query.contains("original"))
 			{
-				ViewController.getInstance().getQuery3(1);
+				filterFrameQuery3 = new FilterFrameQuery3(1);
 			}
 			else if(query.contains("heuristics"))
 			{
-				ViewController.getInstance().getQuery3(2);
+				filterFrameQuery3 = new FilterFrameQuery3(2);
 			}
 			else if(query.contains("views"))
 			{
-				ViewController.getInstance().getQuery3(3);
+				filterFrameQuery3 = new FilterFrameQuery3(3);
 			}
 			else if(query.contains("indexed"))
 			{
-				ViewController.getInstance().getQuery3(4);
+				filterFrameQuery3 = new FilterFrameQuery3(4);
 			}
 			else
 			{
-				ViewController.getInstance().getQuery3(5);
+				filterFrameQuery3 = new FilterFrameQuery3(5);
 			}
 		}
 		else if(query.contains("query4"))
 		{
+			
 			if(query.contains("original"))
 			{
-				ViewController.getInstance().getQuery4(1);
+				filterFrameQuery4 = new FilterFrameQuery4(1);
 			}
 			else if(query.contains("heuristics"))
 			{
-				ViewController.getInstance().getQuery4(2);
+				filterFrameQuery4 = new FilterFrameQuery4(2);
 			}
 			else if(query.contains("views"))
 			{
-				ViewController.getInstance().getQuery4(3);
+				filterFrameQuery4 = new FilterFrameQuery4(3);
 			}
 			else if(query.contains("indexed"))
 			{
-				ViewController.getInstance().getQuery4(4);
+				filterFrameQuery4 = new FilterFrameQuery4(4);
 			}
 			else
 			{
-				ViewController.getInstance().getQuery4(5);
+				filterFrameQuery4 = new FilterFrameQuery4(5);
 			}
 		}
 		else if(query.contains("query5"))
 		{
 			if(query.contains("original"))
 			{
-				ViewController.getInstance().getQuery5(1);
+				filterFrameQuery5 = new FilterFrameQuery5(1);
 			}
 			else if(query.contains("heuristics"))
 			{
-				ViewController.getInstance().getQuery5(2);
+				filterFrameQuery5 = new FilterFrameQuery5(2);
 			}
 			else if(query.contains("views"))
 			{
-				ViewController.getInstance().getQuery5(3);
+				filterFrameQuery5 = new FilterFrameQuery5(3);
 			}
 			else if(query.contains("indexed"))
 			{
-				ViewController.getInstance().getQuery5(4);
+				filterFrameQuery5 = new FilterFrameQuery5(4);
 			}
 			else
 			{
-				ViewController.getInstance().getQuery5(5);
+				filterFrameQuery5 = new FilterFrameQuery5(5);
 			}
 		}
 		else if(query.contains("query6"))
 		{
+
 			if(query.contains("original"))
 			{
-				ViewController.getInstance().getQuery6(1);
+				filterFrameQuery6 = new FilterFrameQuery6(1);
 			}
 			else if(query.contains("heuristics"))
 			{
-				ViewController.getInstance().getQuery6(2);
+				filterFrameQuery6 = new FilterFrameQuery6(2);
 			}
 			else if(query.contains("views"))
 			{
-				ViewController.getInstance().getQuery6(3);
+				filterFrameQuery6 = new FilterFrameQuery6(3);
 			}
 			else if(query.contains("indexed"))
 			{
-				ViewController.getInstance().getQuery6(4);
+				filterFrameQuery6 = new FilterFrameQuery6(4);
 			}
 			else
 			{
-				ViewController.getInstance().getQuery6(5);
+				filterFrameQuery6 = new FilterFrameQuery6(5);
 			}
 		}
 		else 
 		{
+			
 			if(query.contains("original"))
 			{
-				ViewController.getInstance().getQuery7(1);
+				filterFrameQuery7 = new FilterFrameQuery7(1);
 			}
 			else if(query.contains("heuristics"))
 			{
-				ViewController.getInstance().getQuery7(2);
+				filterFrameQuery7 = new FilterFrameQuery7(2);
 			}
 			else if(query.contains("views"))
 			{
-				ViewController.getInstance().getQuery7(3);
+				filterFrameQuery7 = new FilterFrameQuery7(3);
 			}
 			else if(query.contains("indexed"))
 			{
-				ViewController.getInstance().getQuery7(4);
+				filterFrameQuery7 = new FilterFrameQuery7(4);
 			}
 			else
 			{
-				ViewController.getInstance().getQuery7(5);
+				filterFrameQuery7 = new FilterFrameQuery7(5);
 			}
 		}
+		
 	}
+	
 
 	public String getCommand() {
 		return getActionCommand();
@@ -226,14 +243,6 @@ public class ButtonBlock extends JButton {
 	public void setCommand(String command) {
 		setActionCommand(command);
 		
-	}
-
-	public String getName() {
-		return getLabel();
-	}
-
-	public void setName(String name) {
-		this.setLabel(name);
 	}
 	
 	public Point getLocation() {
