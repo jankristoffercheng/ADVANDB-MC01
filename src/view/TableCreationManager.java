@@ -19,12 +19,12 @@ public class TableCreationManager implements Observer {
 	}
 	
 	@Override
-	public void update(String[] columnNames, Object[][] data, double executionTime, String queryName, String type) {
+	public void update(String[] columnNames, Object[][] data, double executionTime, String queryName, String type, int numOfRuns) {
 		// TODO Auto-generated method stub
-		createJFrame(columnNames,data,executionTime,queryName,type);
+		createJFrame(columnNames,data,executionTime,queryName,type, numOfRuns);
 	}
 	
-	public void createJFrame(String[] columnNames, Object[][] data, double executionTime, String queryName, String type)
+	public void createJFrame(String[] columnNames, Object[][] data, double executionTime, String queryName, String type, int numOfRuns)
 	{
 		JFrame frame = new JFrame();
 		frame.getContentPane().setLayout(new BoxLayout(frame.getContentPane(),BoxLayout.Y_AXIS));
@@ -40,12 +40,16 @@ public class TableCreationManager implements Observer {
 	    JLabel lblQueryTypeLabel = new JLabel("Query Type: ");
 	    JLabel lblQueryType = new JLabel(type + " ");
 	    JLabel lblExecTime = new JLabel("Execution Time: ");
-	    JLabel execTime = new JLabel( String.valueOf(executionTime));
+	    JLabel execTime = new JLabel( String.valueOf(executionTime) + " ");
+	    JLabel lblNumOfRunsLabel = new JLabel("Number of Runs: ");
+	    JLabel lblNumOfRuns = new JLabel(numOfRuns + " ");
 	    infoPanel.add(lblQueryName);
 	    infoPanel.add(lblQueryTypeLabel);
 	    infoPanel.add(lblQueryType);
 	    infoPanel.add(lblExecTime);
 	    infoPanel.add(execTime);
+	    infoPanel.add(lblNumOfRunsLabel);
+	    infoPanel.add(lblNumOfRuns);
 	    frame.add(infoPanel);
 	    frame.setSize(450, 300);
 	    frame.setVisible(true);

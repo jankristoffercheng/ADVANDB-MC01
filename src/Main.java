@@ -1,5 +1,8 @@
+import view.MainFrame;
+import view.TableCreationManager;
 import connector.MySQLConnector;
 import connector.TextFileConfiguration;
+import controller.ViewController;
 import dao.Original;
 import dao.StoredProcedures;
 import model.*;
@@ -15,10 +18,8 @@ public class Main {
 		else
 			System.out.println("Connection error!");
 		
-		/*Original original = new Original();
-		for(Query7 result : original.query7(100)) {
-			System.out.println(result.getHousehold());
-		}
-		System.out.println(original.getDuration());*/
+		MainFrame mainFrame = new MainFrame();
+		TableCreationManager tcm = new TableCreationManager();
+		ViewController.getInstance().addObserver(tcm);
 	}
 }
