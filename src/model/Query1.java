@@ -5,7 +5,6 @@ public class Query1 implements Query{
 	public static final String[] COLUMN_NAMES = 
 			{"id",
 			"memno",
-			"age",
 			"age_yr",
 			"birth_date",
 			"sex",
@@ -19,7 +18,6 @@ public class Query1 implements Query{
 	
 	private int id;
 	private int memno;
-	private float age;
 	private int age_yr;
 	private String birth_date;
 	private int sex;
@@ -31,13 +29,12 @@ public class Query1 implements Query{
 	private int jobind; 
 	private String occup;
 	
-	public Query1(int id, int memno, float age, int age_yr, String birth_date, int sex, int educind, int gradel,
+	public Query1(int id, int memno, int age_yr, String birth_date, int sex, int educind, int gradel,
 			int ynotsch, String ynotsch_o, int reln, int jobind, String occup) {
 		super();
 
 		this.id = id;
 		this.memno = memno;
-		this.age = age;
 		this.age_yr = age_yr;
 		this.birth_date = birth_date;
 		this.sex = sex;
@@ -60,12 +57,6 @@ public class Query1 implements Query{
 	}
 	public void setMemno(int memno) {
 		this.memno = memno;
-	}
-	public float getAge() {
-		return age;
-	}
-	public void setAge(float age) {
-		this.age = age;
 	}
 	public int getAge_yr() {
 		return age_yr;
@@ -130,7 +121,7 @@ public class Query1 implements Query{
 	@Override
 	public Object[] getRow() {
 		// TODO Auto-generated method stub			
-		return new Object[] { id, memno, age, age_yr, birth_date, sex, educind, gradel, ynotsch, ynotsch_o, reln,
+		return new Object[] { id, memno, age_yr, birth_date, sex, educind, gradel, ynotsch, ynotsch_o, reln,
 				jobind, occup };
 	}
 }

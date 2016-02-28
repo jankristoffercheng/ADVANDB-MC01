@@ -26,7 +26,7 @@ public class Original extends AbstractDAO{
 	public ArrayList<Query> query1(int nTimes) {
 		Connection connection = MySQLConnector.getConnection();
 		String query = 
-				"SELECT *, id, memno, age, age_yr, birth_date, sex, educind, gradel, "
+				"SELECT *, id, memno, age_yr, birth_date, sex, educind, gradel, "
 									+ "ynotsch, ynotsch_o, reln, jobind, occup "
 				+ "FROM hpq_mem "
 				+ "WHERE age_yr >= 15 AND age_yr <=30 AND reln = 1";
@@ -39,21 +39,20 @@ public class Original extends AbstractDAO{
 			ps = connection.prepareStatement(query);
 			rs = executor.executeQuery(nTimes, ps);
 			while(rs.next()) {
-				Query result = 
+				Query1 result = 
 						new Query1(
-						rs.getInt("id"),
-						rs.getInt("memno"),
-						rs.getFloat("age"),
-						rs.getInt("age_yr"),
-						rs.getString("birth_date"),
-						rs.getInt("sex"),
-						rs.getInt("educind"),
-						rs.getInt("gradel"),
-						rs.getInt("ynotsch"),
-						rs.getString("ynotsch_o"),
-						rs.getInt("reln"),
-						rs.getInt("jobind"),
-						rs.getString("occup"));
+						rs.getInt(1),
+						rs.getInt(2),
+						rs.getInt(3),
+						rs.getString(4),
+						rs.getInt(5),
+						rs.getInt(6),
+						rs.getInt(7),
+						rs.getInt(8),
+						rs.getString(9),
+						rs.getInt(10),
+						rs.getInt(11),
+						rs.getString(12));
 				results.add(result);
 			}
 		} catch (SQLException e) {
@@ -66,7 +65,7 @@ public class Original extends AbstractDAO{
 	public ArrayList<Query> query1(int nTimes, boolean isStudying){
 		Connection connection = MySQLConnector.getConnection();
 		String query = 
-				"SELECT *, id, memno, age, age_yr, birth_date, sex, educind, gradel, "
+				"SELECT *, id, memno, age_yr, birth_date, sex, educind, gradel, "
 									+ "ynotsch, ynotsch_o, reln, jobind, occup "
 				+ "FROM hpq_mem "
 				+ "WHERE age_yr >= 15 AND age_yr <=30 AND reln = 1 "
@@ -80,21 +79,20 @@ public class Original extends AbstractDAO{
 			ps = connection.prepareStatement(query);
 			rs = executor.executeQuery(nTimes, ps);
 			while(rs.next()) {
-				Query result = 
+				Query1 result = 
 						new Query1(
-						rs.getInt("id"),
-						rs.getInt("memno"),
-						rs.getFloat("age"),
-						rs.getInt("age_yr"),
-						rs.getString("birth_date"),
-						rs.getInt("sex"),
-						rs.getInt("educind"),
-						rs.getInt("gradel"),
-						rs.getInt("ynotsch"),
-						rs.getString("ynotsch_o"),
-						rs.getInt("reln"),
-						rs.getInt("jobind"),
-						rs.getString("occup"));
+						rs.getInt(1),
+						rs.getInt(2),
+						rs.getInt(3),
+						rs.getString(4),
+						rs.getInt(5),
+						rs.getInt(6),
+						rs.getInt(7),
+						rs.getInt(8),
+						rs.getString(9),
+						rs.getInt(10),
+						rs.getInt(11),
+						rs.getString(12));
 				results.add(result);
 			}
 		} catch (SQLException e) {
