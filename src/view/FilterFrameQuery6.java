@@ -2,6 +2,8 @@ package view;
 
 import java.awt.Dimension;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.BoxLayout;
 import javax.swing.DefaultComboBoxModel;
@@ -13,6 +15,8 @@ import javax.swing.JRadioButton;
 import javax.swing.JSpinner;
 import javax.swing.JTextField;
 import javax.swing.SpinnerNumberModel;
+
+import controller.ViewController;
 
 public class FilterFrameQuery6 extends JDialog {
 	SpinnerNumberModel numModel;
@@ -35,6 +39,23 @@ public class FilterFrameQuery6 extends JDialog {
 		bottomPanel.setLayout(new BoxLayout(bottomPanel,BoxLayout.X_AXIS));
 		btnSubmit = new JButton("Submit");
 		btnSubmit.setMinimumSize(new Dimension(100,100));
+		btnSubmit.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				// TODO Auto-generated method stub
+				if(!cmbCropType.getSelectedItem().toString().equals(""))
+				{
+					ViewController.getInstance().getQuery6(type, (Integer)spinNumQueries.getValue(), cmbCropType.getSelectedItem().toString());
+				}
+				else
+				{
+					ViewController.getInstance().getQuery6(type, (Integer)spinNumQueries.getValue());
+				}
+				dispose();
+			}
+			
+		});
 		
 		modelCrop = new DefaultComboBoxModel();
 		modelCrop.addElement("None");
