@@ -18,12 +18,6 @@ public class TableCreationManager implements Observer {
 		
 	}
 	
-	@Override
-	public void update(String[] columnNames, Object[][] data, double executionTime, String queryName, String type, int numOfRuns) {
-		// TODO Auto-generated method stub
-		createJFrame(columnNames,data,executionTime,queryName,type, numOfRuns);
-	}
-	
 	public void createJFrame(String[] columnNames, Object[][] data, double executionTime, String queryName, String type, int numOfRuns)
 	{
 		JFrame frame = new JFrame();
@@ -53,6 +47,12 @@ public class TableCreationManager implements Observer {
 	    frame.add(infoPanel);
 	    frame.setSize(450, 300);
 	    frame.setVisible(true);
+	}
+
+	@Override
+	public void update(String[] columnNames, Object[][] data, double executionTime, String queryName, String type, int numOfRuns) {
+		// TODO Auto-generated method stub
+		createJFrame(columnNames,data,executionTime,queryName,type, numOfRuns);
 	}
 	
 }
