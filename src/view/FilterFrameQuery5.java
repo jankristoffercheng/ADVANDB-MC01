@@ -59,7 +59,7 @@ public class FilterFrameQuery5 extends JDialog {
 			
 		});
 		
-		Integer value = new Integer(1);
+		Integer value = new Integer(10);
 		Integer max = Integer.MAX_VALUE;
 		Integer min = new Integer(1);
 		Integer step = new Integer(1);
@@ -96,5 +96,10 @@ public class FilterFrameQuery5 extends JDialog {
 		setVisible(true);
 		repaint();
 		revalidate();
+	}
+	
+	private JDialog getThis()
+	{
+		return this;
 	}
 }

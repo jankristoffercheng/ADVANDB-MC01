@@ -104,4 +104,9 @@ public class FilterFrameQuery3 extends JDialog {
 		repaint();
 		revalidate();
 	}
+	
+	private JDialog getThis()
+	{
+		return this;
+	}
 }
