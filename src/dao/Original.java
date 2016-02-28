@@ -242,7 +242,6 @@ public class Original extends AbstractDAO{
 				+ "WHERE H.id = Q.id AND T.mun = H.mun "
 				+ "AND Q.reln = 1 "
 				+ "AND Q.age_yr BETWEEN 15 and 30 "
-				+ "AND Q.jobind = 1 "
 				+ "GROUP BY H.mun "
 				+ "ORDER BY rate_emp DESC;";
 		ArrayList<Query> results = new ArrayList<Query>();
