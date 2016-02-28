@@ -111,7 +111,6 @@ public class Original extends AbstractDAO{
 				+ "FROM hpq_mem "
 				+ "WHERE age_yr BETWEEN 15 AND 30 "
 				+ "AND reln = 1 "
-				+ "AND educind = 2 "
 				+ "GROUP BY occup "
 				+ "ORDER BY numOccup DESC;";
 		

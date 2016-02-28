@@ -110,7 +110,7 @@ public class Heuristics extends AbstractDAO{
 				"SELECT occup, COUNT(occup) AS numOccup "
 				+ "FROM (SELECT occup "
 						+ "FROM hpq_mem "
-						+ "WHERE age_yr >= 15 AND age_yr <= 30 "
+						+ "WHERE age_yr BETWEEN 15 AND 30 "
 						+ "AND reln = 1) A "
 				+ "GROUP BY occup "
 				+ "ORDER BY numOccup DESC;";
@@ -139,8 +139,9 @@ public class Heuristics extends AbstractDAO{
 				"SELECT occup, COUNT(occup) AS numOccup "
 				+ "FROM (SELECT occup "
 						+ "FROM hpq_mem "
-						+ "WHERE age_yr >= 15 AND age_yr <= 30 "
-						+ "AND reln = 1 AND educind = " + ((isStudying) ? "1" : "2") + ") A "
+						+ "WHERE age_yr BETWEEN 15 AND 30 "
+						+ "AND reln = 1 "
+						+ "AND educind = " + ((isStudying) ? "1" : "2") + ") A "
 				+ "GROUP BY occup "
 				+ "ORDER BY numOccup DESC;";
 		
