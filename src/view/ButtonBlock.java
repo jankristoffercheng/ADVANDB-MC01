@@ -58,6 +58,7 @@ public class ButtonBlock extends JButton {
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				parseQuery(getActionCommand());
+				System.out.println(location.x + "," + location.y);
 			}
 			
 		});

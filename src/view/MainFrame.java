@@ -59,7 +59,7 @@ public class MainFrame extends JFrame {
 
 	
 	public void initializeButtonArray() {
-		buttonArray = new ButtonBlock[8][6];
+		buttonArray = new ButtonBlock[7][6];
 		for(int i = 0 ; i < 7 ; i++) {
 			for(int j = 0 ; j < 6; j++) {
 				if(j == 0)
