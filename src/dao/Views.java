@@ -298,8 +298,7 @@ public class Views extends AbstractDAO{
 										+ "INNER JOIN (SELECT id "
 													+ "FROM hpq_mem "
 													+ "WHERE reln = 1 "
-													+ "AND age_yr BETWEEN 15 AND 30 "
-													+ "AND jobind = 1) M "
+													+ "AND age_yr BETWEEN 15 AND 30 ) M "
 										+ "ON H.id = M.id "
 										+ "GROUP BY H.mun;");
 		Connection connection = MySQLConnector.getConnection();
@@ -309,7 +308,7 @@ public class Views extends AbstractDAO{
 				+ "INNER JOIN query4view1 B "
 				+ "ON A.mun = B.mun "
 				+ "GROUP BY A.mun "
-				+ "ORDER BY rate_emp DESC;";
+				+ "ORDER BY total_num_mem DESC;";
 		
 		ArrayList<Query> results = new ArrayList<Query>();
 		PreparedStatement ps;
@@ -361,7 +360,7 @@ public class Views extends AbstractDAO{
 				+ "INNER JOIN query4view1 B "
 				+ "ON A.mun = B.mun "
 				+ "GROUP BY A.mun "
-				+ "ORDER BY rate_emp DESC;";
+				+ "ORDER BY total_num_mem DESC;";
 		
 		ArrayList<Query> results = new ArrayList<Query>();
 		PreparedStatement ps;

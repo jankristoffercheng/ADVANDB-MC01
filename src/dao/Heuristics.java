@@ -247,18 +247,18 @@ public class Heuristics extends AbstractDAO{
 						+ "FROM (SELECT id, mun FROM hpq_hh) H "
 				+ "INNER JOIN (SELECT id "
 							+ "FROM hpq_mem "
-							+ "WHERE reln = 1 AND age_yr BETWEEN 15 AND 30) M "
+							+ "WHERE reln = 1 "
+							+ "AND age_yr BETWEEN 15 AND 30) M "
 				+ "ON H.id = M.id GROUP BY H.mun) A "
 				+ "INNER JOIN (SELECT mun, COUNT(M.id) AS total_emp "
 							+ "FROM (SELECT id, mun FROM hpq_hh) H "
 							+ "INNER JOIN (SELECT id "
 										+ "FROM hpq_mem "
 										+ "WHERE reln = 1 "
-										+ "AND age_yr BETWEEN 15 AND 30 "
-										+ "AND jobind = 1) M "
+										+ "AND age_yr BETWEEN 15 AND 30 ) M "
 							+ "ON H.id = M.id GROUP BY H.mun) B "
 				+ "ON A.mun = B.mun "
-				+ "ORDER BY rate_emp DESC;";
+				+ "ORDER BY total_num_mem DESC;";
 		ArrayList<Query> results = new ArrayList<Query>();
 		PreparedStatement ps;
 		ResultSet rs;
@@ -296,7 +296,7 @@ public class Heuristics extends AbstractDAO{
 										+ "AND jobind = " + ((isEmployed) ? "1" : "2") +") M "
 							+ "ON H.id = M.id GROUP BY H.mun) B "
 				+ "ON A.mun = B.mun "
-				+ "ORDER BY rate_emp DESC;";
+				+ "ORDER BY total_num_mem DESC;";
 		ArrayList<Query> results = new ArrayList<Query>();
 		PreparedStatement ps;
 		ResultSet rs;

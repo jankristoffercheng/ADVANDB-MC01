@@ -291,7 +291,7 @@ public class StoredProcedures extends AbstractDAO{
 							+ "AND Q.age_yr BETWEEN 15 and 30 "
 							+ "GROUP BY H.mun) T "
 				+ "ON J.mun = T.mun "
-				+ "ORDER BY rate_emp DESC;"
+				+ "ORDER BY T.total_num_mem DESC;"
 			+ "END");
 		
 		Connection connection = MySQLConnector.getConnection();
@@ -336,7 +336,7 @@ public class StoredProcedures extends AbstractDAO{
 							+ "AND Q.age_yr BETWEEN 15 and 30 "
 							+ "GROUP BY H.mun) T "
 				+ "ON J.mun = T.mun "
-				+ "ORDER BY rate_emp DESC;"
+				+ "ORDER BY T.total_num_mem DESC;"
 			+ "END");
 		
 		Connection connection = MySQLConnector.getConnection();

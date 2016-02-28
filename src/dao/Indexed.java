@@ -268,9 +268,8 @@ public class Indexed extends AbstractDAO{
 			    + "WHERE H.id = Q.id AND T.mun = H.mun "
 			    + "AND Q.reln = 1 "
 			    + "AND Q.age_yr BETWEEN 15 and 30 "
-			    + "AND Q.jobind = 1 "
 			    + "GROUP BY H.mun "
-			    + "ORDER BY rate_emp DESC;";
+			    + "ORDER BY total_num_mem DESC;";
 		ArrayList<Query> results = new ArrayList<Query>();
 		PreparedStatement ps;
 		ResultSet rs;
@@ -307,7 +306,7 @@ public class Indexed extends AbstractDAO{
 			    + "AND Q.age_yr BETWEEN 15 and 30 "
 			    + "AND Q.jobind = "+ ((isWorking) ? "1 " : "2 ")
 			    + "GROUP BY H.mun "
-			    + "ORDER BY rate_emp DESC;";
+			    + "ORDER BY total_num_mem DESC;";
 		ArrayList<Query> results = new ArrayList<Query>();
 		PreparedStatement ps;
 		ResultSet rs;

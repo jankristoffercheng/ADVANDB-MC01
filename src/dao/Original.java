@@ -168,7 +168,7 @@ public class Original extends AbstractDAO{
 	public ArrayList<Query> query3(int nTimes) {
 		Connection connection = MySQLConnector.getConnection();
 		String query = 
-				"SELECT H.id AS household, H.totin/12 AS monthly_income, T.mem_count "
+				"SELECT *, H.id AS household, H.totin/12 AS monthly_income, T.mem_count "
 						+ "FROM hpq_hh H, hpq_mem M, (SELECT H.id, COUNT(M.memno) AS mem_count "
 								                   + "FROM hpq_hh H, hpq_mem M "
 								                   + "WHERE H.id = M.id "
@@ -199,7 +199,7 @@ public class Original extends AbstractDAO{
 	public ArrayList<Query> query3(int nTimes, int memno, double lowerBracket, double higherBracket) {
 		Connection connection = MySQLConnector.getConnection();
 		String query = 
-				"SELECT H.id AS household, H.totin/12 AS monthly_income, T.mem_count "
+				"SELECT *, H.id AS household, H.totin/12 AS monthly_income, T.mem_count "
 						+ "FROM hpq_hh H, hpq_mem M, (SELECT H.id, COUNT(M.memno) AS mem_count "
 								                   + "FROM hpq_hh H, hpq_mem M "
 								                   + "WHERE H.id = M.id "
@@ -246,7 +246,7 @@ public class Original extends AbstractDAO{
 				+ "AND Q.reln = 1 "
 				+ "AND Q.age_yr BETWEEN 15 and 30 "
 				+ "GROUP BY H.mun "
-				+ "ORDER BY rate_emp DESC;";
+				+ "ORDER BY T.total_num_mem DESC;";
 		ArrayList<Query> results = new ArrayList<Query>();
 		PreparedStatement ps;
 		ResultSet rs;
@@ -280,7 +280,7 @@ public class Original extends AbstractDAO{
 				+ "AND Q.age_yr BETWEEN 15 and 30 "
 				+ "AND Q.jobind = " + ((isEmployed) ? "1 " : "2 ")
 				+ "GROUP BY H.mun "
-				+ "ORDER BY rate_emp DESC;";
+				+ "ORDER BY T.total_num_mem DESC;";
 		ArrayList<Query> results = new ArrayList<Query>();
 		PreparedStatement ps;
 		ResultSet rs;
@@ -349,7 +349,7 @@ public class Original extends AbstractDAO{
 		
 		Connection connection = MySQLConnector.getConnection();
 		String query = 
-				 "SELECT H.mun AS municipality, H.id AS household, A.aquanitype, A.aquanitype_o, A.aquani_vol "
+				 "SELECT *, H.mun AS municipality, H.id AS household, A.aquanitype, A.aquanitype_o, A.aquani_vol "
 				+ "FROM hpq_aquani A, hpq_hh H, hpq_mem Q "
 				+ "WHERE Q.id = H.id AND Q.id = A.hpq_hh_id "
 				+ "AND Q.age_yr BETWEEN 15 AND 30 "
@@ -427,7 +427,7 @@ public class Original extends AbstractDAO{
 		
 		Connection connection = MySQLConnector.getConnection();
 		String query = 
-				  "SELECT H.mun AS municipality, H.id AS household, C.croptype, C.croptype_o, C.crop_vol "
+				  "SELECT *, H.mun AS municipality, H.id AS household, C.croptype, C.croptype_o, C.crop_vol "
 				+ "FROM hpq_crop C, hpq_hh H, hpq_mem Q "
 				+ "WHERE Q.id = H.id AND Q.id = C.hpq_hh_id "
 				+ "AND Q.age_yr BETWEEN 15 AND 30 "
