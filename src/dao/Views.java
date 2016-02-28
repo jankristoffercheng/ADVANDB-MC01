@@ -130,8 +130,7 @@ public class Views extends AbstractDAO{
 										+ "SELECT occup "
 										+ "FROM hpq_mem "
 										+ "WHERE age_yr BETWEEN 15 AND 30 "
-										+ "AND reln = 1 "
-										+ "AND educind = 2;");
+										+ "AND reln = 1 ;");
 		
 		Connection connection = MySQLConnector.getConnection();
 		String query = 
