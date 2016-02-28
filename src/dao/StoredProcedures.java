@@ -123,8 +123,8 @@ public class StoredProcedures extends AbstractDAO{
 				+ "BEGIN "
 					+ "SELECT occup, COUNT(occup) AS numOccup "
 					+ "FROM hpq_mem  "
-					+ "WHERE jobind = 1 AND reln = 1 "
-					+ "AND age_yr >= 15 AND age_yr <= 30 "
+					+ "WHERE reln = 1 "
+					+ "AND age_yr BETWEEN 15 AND 30 "
 					+ "GROUP BY occup "
 					+ "ORDER BY numOccup DESC;"
 				+ "END");
@@ -142,7 +142,7 @@ public class StoredProcedures extends AbstractDAO{
 			rs = executor.executeQuery(nTimes, ps);
 			while(rs.next()) {
 				Query2 result = new Query2(rs.getString(1), rs.getInt(2));
-				System.out.println(result.getOccup());
+				//System.out.println(result.getOccup());
 				results.add(result);
 			}
 		} catch (SQLException e) {
@@ -160,8 +160,8 @@ public class StoredProcedures extends AbstractDAO{
 				+ "BEGIN "
 					+ "SELECT occup, COUNT(occup) AS numOccup "
 					+ "FROM hpq_mem  "
-					+ "WHERE jobind = 1 AND reln = 1 "
-					+ "AND age_yr >= 15 AND age_yr <= 30 "
+					+ "WHERE reln = 1 "
+					+ "AND age_yr BETWEEN 15 AND 30 "
 					+ "AND educind = isStudying "
 					+ "GROUP BY occup "
 					+ "ORDER BY numOccup DESC;"
