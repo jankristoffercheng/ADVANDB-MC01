@@ -389,11 +389,13 @@ public class Original extends AbstractDAO{
 	public ArrayList<Query> query6(int nTimes) {
 		Connection connection = MySQLConnector.getConnection();
 		String query = 
-				"SELECT *, H.mun AS municipality, H.id AS household, C.croptype, C.croptype_o, C.crop_vol "
-				+ "FROM hpq_crop C, hpq_hh H, query1 Q "
+				"SELECT *, H.mun AS municipality, H.id as household, C.croptype, C.croptype_o, C.crop_vol "
+				+ "FROM hpq_crop C, hpq_hh H, hpq_mem Q "
 				+ "WHERE Q.id = H.id AND Q.id = C.hpq_hh_id "
+				+ "AND Q.age_yr BETWEEN 15 AND 30 "
+				+ "AND Q.reln = 1 "
 				+ "AND crop_vol < (SELECT AVG(crop_vol) "
-								+ "FROM hpq_crop) "
+				+ "                  FROM hpq_crop ) "
 				+ "GROUP BY H.mun, H.id;";
 		ArrayList<Query> results = new ArrayList<Query>();
 		PreparedStatement ps;
