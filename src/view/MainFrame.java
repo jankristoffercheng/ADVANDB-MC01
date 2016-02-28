@@ -24,18 +24,6 @@ public class MainFrame extends JFrame {
 	private JPanel leftPanel;
 	private JPanel rightPanel;
 	private JPanel topRightPanel;
-	private JLabel lblQuery1;
-	private JLabel lblQuery2;
-	private JLabel lblQuery3;
-	private JLabel lblQuery4;
-	private JLabel lblQuery5;
-	private JLabel lblQuery6;
-	private JLabel lblQuery7;
-	private JLabel lblTypeOriginal;
-	private JLabel lblTypeHeuristics;
-	private JLabel lblTypeViews;
-	private JLabel lblTypeIndexed;
-	private JLabel lblTypeStoredProcedures;
 	
 	
 	public MainFrame()
@@ -50,31 +38,6 @@ public class MainFrame extends JFrame {
 		topRightPanel = new JPanel();
 		topRightPanel.setLayout(new BoxLayout(topRightPanel, BoxLayout.X_AXIS));
 		
-		lblQuery1 = new JLabel("Query 1");
-		lblQuery2 = new JLabel("Query 2");
-		lblQuery3 = new JLabel("Query 3");
-		lblQuery4 = new JLabel("Query 4");
-		lblQuery5 = new JLabel("Query 5");
-		lblQuery6 = new JLabel("Query 6");
-		lblQuery7 = new JLabel("Query 7");
-		lblTypeOriginal = new JLabel("Original");
-		lblTypeHeuristics = new JLabel("Heuristics");
-		lblTypeViews = new JLabel("Views");
-		lblTypeIndexed = new JLabel("Indexed");
-		lblTypeStoredProcedures = new JLabel("Stored Procedures");
-		
-		leftPanel.add(lblQuery1);
-		leftPanel.add(lblQuery2);
-		leftPanel.add(lblQuery3);
-		leftPanel.add(lblQuery4);
-		leftPanel.add(lblQuery5);
-		leftPanel.add(lblQuery6);
-		leftPanel.add(lblQuery7);
-		topRightPanel.add(lblTypeOriginal);
-		topRightPanel.add(lblTypeHeuristics);
-		topRightPanel.add(lblTypeViews);
-		topRightPanel.add(lblTypeIndexed);
-		topRightPanel.add(lblTypeStoredProcedures);
 		rightPanel.add(topRightPanel);
 		
 		
