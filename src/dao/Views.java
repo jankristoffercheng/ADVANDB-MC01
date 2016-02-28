@@ -283,21 +283,150 @@ public class Views extends AbstractDAO{
 			
 	@Override
 	public ArrayList<Query> query4(int nTimes) {
-		// TODO Auto-generated method stub
-		return null;
+		MySQLConnector.executeStatement("CREATE TABLE query4view (mun INT, countRaw INT);");
+		MySQLConnector.executeStatement("INSERT INTO query4view "
+										+ "SELECT mun, COUNT(M.id) AS total_num_mem "
+										+ "FROM (SELECT id, mun FROM hpq_hh) H "
+										+ "INNER JOIN (SELECT id "
+													+ "FROM hpq_mem "
+													+ "WHERE reln = 1 "
+													+ "AND age_yr BETWEEN 15 AND 30) M "
+										+ "ON H.id = M.id "
+										+ "GROUP BY H.mun;");
+		
+		MySQLConnector.executeStatement("CREATE TABLE query4view1 (mun INT, countJob INT);");
+		MySQLConnector.executeStatement("INSERT INTO query4view1 "
+										+ "SELECT mun, COUNT(M.id) AS total_emp "
+										+ "FROM (SELECT id, mun FROM hpq_hh) H "
+										+ "INNER JOIN (SELECT id "
+													+ "FROM hpq_mem "
+													+ "WHERE reln = 1 "
+													+ "AND age_yr BETWEEN 15 AND 30 "
+													+ "AND jobind = 1) M "
+										+ "ON H.id = M.id "
+										+ "GROUP BY H.mun;");
+		Connection connection = MySQLConnector.getConnection();
+		String query = 
+				"SELECT A.mun, countJob AS total_emp, countRaw AS total_num_mem, ((countJob/countRaw) * 100) AS rate_emp "
+				+ "FROM query4view A "
+				+ "INNER JOIN query4view1 B "
+				+ "ON A.mun = B.mun "
+				+ "GROUP BY A.mun "
+				+ "ORDER BY rate_emp DESC;";
+		
+		ArrayList<Query> results = new ArrayList<Query>();
+		PreparedStatement ps;
+		ResultSet rs;
+		executor.reset();
+		try {
+			ps = connection.prepareStatement(query);
+			rs = executor.executeQuery(nTimes, ps);
+			while(rs.next()) {
+				Query4 result = new Query4(rs.getInt(1),rs.getInt(2), rs.getInt(3), rs.getDouble(4));
+				results.add(result);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		MySQLConnector.executeStatement("DROP TABLE query4view;");
+		MySQLConnector.executeStatement("DROP TABLE query4view1;");
+		return results;
 	}
 	
-	public ArrayList<Query> query4(int nTimes, int isEmployed) {
-		// TODO Auto-generated method stub
-		return null;
+	public ArrayList<Query> query4(int nTimes, boolean isEmployed) {
+		MySQLConnector.executeStatement("CREATE TABLE query4view (mun INT, countRaw INT);");
+		MySQLConnector.executeStatement("INSERT INTO query4view "
+										+ "SELECT mun, COUNT(M.id) AS total_num_mem "
+										+ "FROM (SELECT id, mun FROM hpq_hh) H "
+										+ "INNER JOIN (SELECT id "
+													+ "FROM hpq_mem "
+													+ "WHERE reln = 1 "
+													+ "AND age_yr BETWEEN 15 AND 30) M "
+										+ "ON H.id = M.id "
+										+ "GROUP BY H.mun;");
+		
+		MySQLConnector.executeStatement("CREATE TABLE query4view1 (mun INT, countJob INT);");
+		MySQLConnector.executeStatement("INSERT INTO query4view1 "
+										+ "SELECT mun, COUNT(M.id) AS total_emp "
+										+ "FROM (SELECT id, mun FROM hpq_hh) H "
+										+ "INNER JOIN (SELECT id "
+													+ "FROM hpq_mem "
+													+ "WHERE reln = 1 "
+													+ "AND age_yr BETWEEN 15 AND 30 "
+													+ "AND jobind = "+ ((isEmployed) ? "1" : "2")+ ") M "
+										+ "ON H.id = M.id "
+										+ "GROUP BY H.mun;");
+		Connection connection = MySQLConnector.getConnection();
+		String query = 
+				"SELECT A.mun, countJob AS total_emp, countRaw AS total_num_mem, ((countJob/countRaw) * 100) AS rate_emp "
+				+ "FROM query4view A "
+				+ "INNER JOIN query4view1 B "
+				+ "ON A.mun = B.mun "
+				+ "GROUP BY A.mun "
+				+ "ORDER BY rate_emp DESC;";
+		
+		ArrayList<Query> results = new ArrayList<Query>();
+		PreparedStatement ps;
+		ResultSet rs;
+		executor.reset();
+		try {
+			ps = connection.prepareStatement(query);
+			rs = executor.executeQuery(nTimes, ps);
+			while(rs.next()) {
+				Query4 result = new Query4(rs.getInt(1),rs.getInt(2), rs.getInt(3), rs.getDouble(4));
+				results.add(result);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		MySQLConnector.executeStatement("DROP TABLE query4view;");
+		MySQLConnector.executeStatement("DROP TABLE query4view1;");
+		return results;
 	}
 /*********************************************END QUERY 4********************************************************/
 /*******************************************START QUERY 5********************************************************/	
 				
 	@Override
 	public ArrayList<Query> query5(int nTimes) {
-		// TODO Auto-generated method stub
-		return null;
+		MySQLConnector.executeStatement("CREATE TABLE query5view (mun INT, id INT);");
+		MySQLConnector.executeStatement("INSERT INTO query5view "
+										+ "SELECT mun, M.id "
+										+ "FROM (SELECT id, mun "
+										+ "		 FROM hpq_hh) H "
+										+ "INNER JOIN(SELECT id "
+										+ "           FROM hpq_mem "
+										+ "           WHERE reln = 1 AND age_yr BETWEEN 15 AND 30) M "
+										+ "ON H.id = M.id "
+										+ "GROUP BY H.mun, H.id;");
+		Connection connection = MySQLConnector.getConnection();
+		String query = 
+				"SELECT H.mun AS municipality, H.id AS household, A.aquanitype, A.aquanitype_o, A.aquani_vol "
+				+ "FROM query5view H "
+				+ "INNER JOIN hpq_aquani A "
+				+ "ON H.id = A.hpq_hh_id "
+				+ "WHERE A.aquani_vol < (SELECT AVG(aquani_vol)"
+				+ "                		 FROM hpq_aquani) "
+				+ "GROUP BY H.mun, H.id;";
+		
+		ArrayList<Query> results = new ArrayList<Query>();
+		PreparedStatement ps;
+		ResultSet rs;
+		executor.reset();
+		try {
+			ps = connection.prepareStatement(query);
+			rs = executor.executeQuery(nTimes, ps);
+			while(rs.next()) {
+				Query5 result = new Query5(rs.getInt(1),rs.getInt(2), rs.getInt(3), rs.getString(4), rs.getInt(5));
+				results.add(result);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		MySQLConnector.executeStatement("DROP TABLE query5view;");
+		return results;
 	}
 	
 	public ArrayList<Query> query5(int nTimes, String fishType) {
