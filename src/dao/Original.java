@@ -27,9 +27,9 @@ public class Original extends AbstractDAO{
 		Connection connection = MySQLConnector.getConnection();
 		String query = 
 				"SELECT *, id, memno, age_yr, birth_date, sex, educind, gradel, "
-									+ "ynotsch, ynotsch_o, reln, jobind, occup "
+					+ "ynotsch, ynotsch_o, reln, jobind, occup "
 				+ "FROM hpq_mem "
-				+ "WHERE age_yr >= 15 AND age_yr <=30 AND reln = 1";
+				+ "WHERE age_yr BETWEEN 15 AND 30 AND reln = 1";
 		
 		ArrayList<Query> results = new ArrayList<Query>();
 		PreparedStatement ps;
@@ -41,18 +41,18 @@ public class Original extends AbstractDAO{
 			while(rs.next()) {
 				Query1 result = 
 						new Query1(
-						rs.getInt(1),
-						rs.getInt(2),
-						rs.getInt(3),
-						rs.getString(4),
-						rs.getInt(5),
-						rs.getInt(6),
-						rs.getInt(7),
-						rs.getInt(8),
-						rs.getString(9),
-						rs.getInt(10),
-						rs.getInt(11),
-						rs.getString(12));
+						rs.getInt("id"),
+						rs.getInt("memno"),
+						rs.getInt("age_yr"),
+						rs.getString("birth_date"),
+						rs.getInt("sex"),
+						rs.getInt("educind"),
+						rs.getInt("gradel"),
+						rs.getInt("ynotsch"),
+						rs.getString("ynotsch_o"),
+						rs.getInt("reln"),
+						rs.getInt("jobind"),
+						rs.getString("occup"));
 				results.add(result);
 			}
 		} catch (SQLException e) {
@@ -66,9 +66,9 @@ public class Original extends AbstractDAO{
 		Connection connection = MySQLConnector.getConnection();
 		String query = 
 				"SELECT *, id, memno, age_yr, birth_date, sex, educind, gradel, "
-									+ "ynotsch, ynotsch_o, reln, jobind, occup "
+					 + "ynotsch, ynotsch_o, reln, jobind, occup "
 				+ "FROM hpq_mem "
-				+ "WHERE age_yr >= 15 AND age_yr <=30 AND reln = 1 "
+				+ "WHERE age_yr BETWEEN 15 AND 30 AND reln = 1 "
 				+ "AND educind = " + ((isStudying) ? "1" : "2");
 		
 		ArrayList<Query> results = new ArrayList<Query>();
@@ -81,18 +81,18 @@ public class Original extends AbstractDAO{
 			while(rs.next()) {
 				Query1 result = 
 						new Query1(
-						rs.getInt(1),
-						rs.getInt(2),
-						rs.getInt(3),
-						rs.getString(4),
-						rs.getInt(5),
-						rs.getInt(6),
-						rs.getInt(7),
-						rs.getInt(8),
-						rs.getString(9),
-						rs.getInt(10),
-						rs.getInt(11),
-						rs.getString(12));
+							rs.getInt("id"),
+							rs.getInt("memno"),
+							rs.getInt("age_yr"),
+							rs.getString("birth_date"),
+							rs.getInt("sex"),
+							rs.getInt("educind"),
+							rs.getInt("gradel"),
+							rs.getInt("ynotsch"),
+							rs.getString("ynotsch_o"),
+							rs.getInt("reln"),
+							rs.getInt("jobind"),
+							rs.getString("occup"));
 				results.add(result);
 			}
 		} catch (SQLException e) {
@@ -108,12 +108,12 @@ public class Original extends AbstractDAO{
 		Connection connection = MySQLConnector.getConnection();
 		String query = 
 				"SELECT *, occup, COUNT(occup) AS numOccup "
-				+ "FROM query1 "
-				+ "WHERE jobind = 1 "
-				+ "AND (educind = 2 OR ynotsch IS NOT NULL) "
-				+ "AND ynotsch = 8 "
+				+ "FROM hpq_mem "
+				+ "WHERE age_yr BETWEEN 15 AND 30 "
+				+ "AND reln = 1 "
+				+ "AND educind = 2 "
 				+ "GROUP BY occup "
-				+ "ORDER BY numOccup DESC";
+				+ "ORDER BY numOccup DESC;";
 		
 		ArrayList<Query> results = new ArrayList<Query>();
 		PreparedStatement ps;
@@ -137,13 +137,13 @@ public class Original extends AbstractDAO{
 		Connection connection = MySQLConnector.getConnection();
 		String query = 
 				"SELECT *, occup, COUNT(occup) AS numOccup "
-				+ "FROM query1 "
-				+ "WHERE jobind = 1 "
-				+ "AND (educind = 2 OR ynotsch IS NOT NULL) "
-				+ "AND ynotsch = 8 "
-				+ "AND educind = " + ((isStudying) ? "1 " : "2 ")
+				+ "FROM hpq_mem "
+				+ "WHERE age_yr BETWEEN 15 AND 30 "
+				+ "AND reln = 1 "
+				+ "AND educind = "+ ((isStudying) ? "1 " : "2 ")
 				+ "GROUP BY occup "
-				+ "ORDER BY numOccup DESC";
+				+ "ORDER BY numOccup DESC;";
+		
 		
 		ArrayList<Query> results = new ArrayList<Query>();
 		PreparedStatement ps;
@@ -174,7 +174,7 @@ public class Original extends AbstractDAO{
 				+ "WHERE H.id = M.id "
 				+ "AND M.id IN (SELECT M.id "
 							+ "FROM hpq_mem M "
-							+ "WHERE M.reln = 1 AND M.age_yr<= 30 AND M.age_yr >= 15) "
+							+ "WHERE M.reln = 1 AND M.age_yr BETWEEN 30 AND 15) "
 				+ "GROUP BY  M.id";
 		ArrayList<Query> results = new ArrayList<Query>();
 		PreparedStatement ps;
@@ -202,7 +202,7 @@ public class Original extends AbstractDAO{
 				+ "WHERE H.id = M.id "
 				+ "AND M.id IN (SELECT M.id "
 							+ "FROM hpq_mem M "
-							+ "WHERE M.reln = 1 AND M.age_yr<= 30 AND M.age_yr >= 15) "
+							+ "WHERE M.reln = 1 AND M.age_yr BETWEEN 30 AND 15) "
 				+ "GROUP BY M.id "
 				+ "HAVING mem_count = " + memno + " "
 				+ "AND monthly_income BETWEEN " + lowerBracket + " AND " + higherBracket;
