@@ -169,13 +169,16 @@ public class Original extends AbstractDAO{
 	public ArrayList<Query> query3(int nTimes) {
 		Connection connection = MySQLConnector.getConnection();
 		String query = 
-				"SELECT *, M.id AS household, H.totin/12 AS monthly_income, COUNT(M.memno) AS mem_count "
-				+ "FROM hpq_hh H, hpq_mem M "
-				+ "WHERE H.id = M.id "
-				+ "AND M.id IN (SELECT M.id "
-							+ "FROM hpq_mem M "
-							+ "WHERE M.reln = 1 AND M.age_yr BETWEEN 30 AND 15) "
-				+ "GROUP BY  M.id";
+				"SELECT H.id AS household, H.totin/12 AS monthly_income, T.mem_count "
+						+ "FROM hpq_hh H, hpq_mem M, (SELECT H.id, COUNT(M.memno) AS mem_count "
+								                   + "FROM hpq_hh H, hpq_mem M "
+								                   + "WHERE H.id = M.id "
+								                   + "GROUP BY H.id) T "
+						+ "WHERE H.id = M.id "
+						+ "AND M.id = T.id "
+						+ "AND M.age_yr BETWEEN 15 AND 30 "
+						+ "AND M.reln = 1 "
+						+ "GROUP BY H.id;";
 		ArrayList<Query> results = new ArrayList<Query>();
 		PreparedStatement ps;
 		ResultSet rs;
@@ -197,15 +200,18 @@ public class Original extends AbstractDAO{
 	public ArrayList<Query> query3(int nTimes, int memno, double lowerBracket, double higherBracket) {
 		Connection connection = MySQLConnector.getConnection();
 		String query = 
-				"SELECT *, M.id AS household, H.totin/12 AS monthly_income, COUNT(M.memno) AS mem_count "
-				+ "FROM hpq_hh H, hpq_mem M "
-				+ "WHERE H.id = M.id "
-				+ "AND M.id IN (SELECT M.id "
-							+ "FROM hpq_mem M "
-							+ "WHERE M.reln = 1 AND M.age_yr BETWEEN 30 AND 15) "
-				+ "GROUP BY M.id "
-				+ "HAVING mem_count = " + memno + " "
-				+ "AND monthly_income BETWEEN " + lowerBracket + " AND " + higherBracket;
+				"SELECT H.id AS household, H.totin/12 AS monthly_income, T.mem_count "
+						+ "FROM hpq_hh H, hpq_mem M, (SELECT H.id, COUNT(M.memno) AS mem_count "
+								                   + "FROM hpq_hh H, hpq_mem M "
+								                   + "WHERE H.id = M.id "
+								                   + "GROUP BY H.id) T "
+						+ "WHERE H.id = M.id "
+						+ "AND M.id = T.id "
+						+ "AND M.age_yr BETWEEN 15 AND 30 "
+						+ "AND M.reln = 1 "
+						+ "GROUP BY H.id "
+						+ "HAVING monthly_income BETWEEN "+ lowerBracket +" AND "+ higherBracket 
+						+ " AND mem_count = "+memno+";";
 		ArrayList<Query> results = new ArrayList<Query>();
 		PreparedStatement ps;
 		ResultSet rs;

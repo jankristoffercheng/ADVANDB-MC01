@@ -253,7 +253,7 @@ public class Views extends AbstractDAO{
 		
 		Connection connection = MySQLConnector.getConnection();
 		String query = 
-				"SELECT id, monthly_income, mem_count"
+				"SELECT id, monthly_income, mem_count "
 			   + "FROM query3view "
 			   + "WHERE monthly_income BETWEEN " + lowerBracket +" AND "+higherBracket+" "
 			   + "AND mem_count = "+memno+ ";";
