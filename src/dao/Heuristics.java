@@ -467,13 +467,13 @@ public class Heuristics extends AbstractDAO{
 							+ "WHERE "
 							+ ((nCroptype == 4) ? 
 							  "croptype = 4 AND croptype_o LIKE '%" + cropType + "%' " : 
-							  "croptype = " + cropType + " ")
+							  "croptype = " + nCroptype + " ")
 							+ "AND crop_vol < (SELECT AVG(crop_vol) "
 												+ "FROM hpq_crop "
 												+ "WHERE "
 												+ ((nCroptype == 4) ? 
 												   "croptype = 4 AND croptype_o LIKE '%" + cropType + "%' ))C " : 
-												   "croptype = " + cropType + " )) C ")
+												   "croptype = " + nCroptype + " )) C ")
 				+ "ON H.id = C.hpq_hh_id "
 				+ "INNER JOIN (SELECT id "
 							+ "FROM hpq_mem "
@@ -481,6 +481,7 @@ public class Heuristics extends AbstractDAO{
 							+ "AND reln = 1) M "
 				+ "ON H.id = M.id "
 				+ "GROUP BY H.mun, H.id;";
+		
 		ArrayList<Query> results = new ArrayList<Query>();
 		PreparedStatement ps;
 		ResultSet rs;

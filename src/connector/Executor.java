@@ -13,7 +13,9 @@ public class Executor {
 		for(int i=0; i<nTimes; i++) {
 			long start = System.currentTimeMillis();
 			rs = ps.executeQuery();
-			duration += System.currentTimeMillis() - start;
+			long result = System.currentTimeMillis() - start;
+			duration += result;
+			System.out.printf("%.4f\n", result/1000.0);
 		}
 		duration /= nTimes;
 		duration /= 1000;

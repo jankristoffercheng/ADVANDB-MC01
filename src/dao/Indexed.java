@@ -291,6 +291,8 @@ public class Indexed extends AbstractDAO{
 
 	public ArrayList<Query> query4(int nTimes, boolean isWorking){
 		MySQLConnector.executeStatement("ALTER TABLE hpq_mem ADD KEY (reln);");
+		MySQLConnector.executeStatement("ALTER TABLE hpq_mem ADD KEY (age_yr);");
+		MySQLConnector.executeStatement("ALTER TABLE hpq_mem ADD KEY (jobind);");
 		
 		Connection connection = MySQLConnector.getConnection();
 		String query = 
@@ -323,6 +325,8 @@ public class Indexed extends AbstractDAO{
 			e.printStackTrace();
 		}
 		MySQLConnector.executeStatement("DROP INDEX reln ON hpq_mem;");
+		MySQLConnector.executeStatement("DROP INDEX age_yr ON hpq_mem;");
+		MySQLConnector.executeStatement("DROP INDEX jobind ON hpq_mem;");
 		return results;
 	}
 /*********************************************END QUERY 4********************************************************/
