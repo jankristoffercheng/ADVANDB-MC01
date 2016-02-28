@@ -4,6 +4,7 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 
 import javax.swing.BoxLayout;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
@@ -15,6 +16,7 @@ import javax.swing.SpinnerNumberModel;
 
 public class FilterFrameQuery6 extends JDialog {
 	SpinnerNumberModel numModel;
+	DefaultComboBoxModel modelCrop;
 	JComboBox cmbCropType;
 	JPanel filterPanel;
 	JPanel bottomPanel;
@@ -33,6 +35,20 @@ public class FilterFrameQuery6 extends JDialog {
 		bottomPanel.setLayout(new BoxLayout(bottomPanel,BoxLayout.X_AXIS));
 		btnSubmit = new JButton("Submit");
 		btnSubmit.setMinimumSize(new Dimension(100,100));
+		
+		modelCrop = new DefaultComboBoxModel();
+		modelCrop.addElement("None");
+		modelCrop.addElement("Sugar Cane");
+		modelCrop.addElement("Palay");
+		modelCrop.addElement("Corn");
+		modelCrop.addElement("Banana");
+		modelCrop.addElement("Kamote");
+		modelCrop.addElement("Cassava");
+		modelCrop.addElement("Mango");
+		modelCrop.addElement("Pakwan");
+		modelCrop.addElement("Sili");
+		
+		cmbCropType.setModel(modelCrop);
 		
 		Integer value = new Integer(1);
 		Integer max = Integer.MAX_VALUE;

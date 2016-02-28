@@ -6,6 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.BoxLayout;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
@@ -20,11 +21,13 @@ import controller.ViewController;
 public class FilterFrameQuery5 extends JDialog {
 	
 	SpinnerNumberModel numModel;
+	DefaultComboBoxModel modelFish;
 	JComboBox cmbFishType;
 	JPanel filterPanel;
 	JPanel bottomPanel;
 	JButton btnSubmit;
 	JSpinner spinNumQueries;
+	
 	
 	public FilterFrameQuery5(int type) {
 		setSize(new Dimension(350,150));
@@ -63,6 +66,21 @@ public class FilterFrameQuery5 extends JDialog {
 		numModel = new SpinnerNumberModel(value,min,max,step);
 		spinNumQueries = new JSpinner(numModel);
 		
+		modelFish = new DefaultComboBoxModel();
+		modelFish.addElement("None");
+		modelFish.addElement("Tilapia");
+		modelFish.addElement("Milkfish");
+		modelFish.addElement("Catfish");
+		modelFish.addElement("Mudfish");
+		modelFish.addElement("Carp");
+		modelFish.addElement("Lapu");
+		modelFish.addElement("Danggit");
+		modelFish.addElement("Octupus");
+		modelFish.addElement("Maya-maya");
+		modelFish.addElement("Tulingan");
+		
+		cmbFishType.setModel(modelFish);
+		cmbFishType.setSelectedIndex(0);
 		filterPanel.add(cmbFishType);
 		bottomPanel.add(btnSubmit);
 		bottomPanel.add(spinNumQueries);
