@@ -430,33 +430,251 @@ public class Views extends AbstractDAO{
 	}
 	
 	public ArrayList<Query> query5(int nTimes, String fishType) {
-		// TODO Auto-generated method stub
-		return null;
+		
+		fishType = fishType.toLowerCase().trim();
+		int aquanitype = 6;
+		if(fishType.equals("tilapia")) {
+			aquanitype = 1;
+		} else if(fishType.equals("milkfish")) {
+			aquanitype = 2;
+		} else if(fishType.equals("catfish")) {
+			aquanitype = 3;
+		} else if(fishType.equals("mudfish")) {
+			aquanitype = 4;
+		} else if(fishType.equals("carp")) {
+			aquanitype = 5;
+		}
+		
+		MySQLConnector.executeStatement("CREATE TABLE query5view (mun INT, id INT);");
+		MySQLConnector.executeStatement("INSERT INTO query5view "
+										+ "SELECT mun, M.id "
+										+ "FROM (SELECT id, mun "
+										+ "		 FROM hpq_hh) H "
+										+ "INNER JOIN(SELECT id "
+										+ "           FROM hpq_mem "
+										+ "           WHERE reln = 1 AND age_yr BETWEEN 15 AND 30) M "
+										+ "ON H.id = M.id "
+										+ "GROUP BY H.mun, H.id;");
+		Connection connection = MySQLConnector.getConnection();
+		String query = 
+				"SELECT H.mun AS municipality, H.id AS household, A.aquanitype, A.aquanitype_o, A.aquani_vol "
+				+ "FROM query5view H "
+				+ "INNER JOIN hpq_aquani A "
+				+ "ON H.id = A.hpq_hh_id "
+				+ "WHERE "+ ((aquanitype == 6)? 
+						     "aquanitype = 6 AND aquanitype_o LIKE '%" + fishType + "%'" :
+					         "aquanitype = " + aquanitype) + " " 
+				+ "AND A.aquani_vol < (SELECT AVG(aquani_vol)"
+				+ "                	   FROM hpq_aquani"
+				+ "					   WHERE "+ 
+									   ((aquanitype == 6)? 
+								        "aquanitype = 6 AND aquanitype_o LIKE '%" + fishType + "%' )" :
+									    "aquanitype = " + aquanitype + " )") 
+				+ "GROUP BY H.mun, H.id;";
+		
+		ArrayList<Query> results = new ArrayList<Query>();
+		PreparedStatement ps;
+		ResultSet rs;
+		executor.reset();
+		try {
+			ps = connection.prepareStatement(query);
+			rs = executor.executeQuery(nTimes, ps);
+			while(rs.next()) {
+				Query5 result = new Query5(rs.getInt(1),rs.getInt(2), rs.getInt(3), rs.getString(4), rs.getInt(5));
+				results.add(result);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		MySQLConnector.executeStatement("DROP TABLE query5view;");
+		return results;
 	}
 /*********************************************END QUERY 5********************************************************/
 /*******************************************START QUERY 6********************************************************/	
 			
 	@Override
 	public ArrayList<Query> query6(int nTimes) {
-		// TODO Auto-generated method stub
-		return null;
+		MySQLConnector.executeStatement("CREATE TABLE query6view (mun INT, id INT);");
+		MySQLConnector.executeStatement("INSERT INTO query6view "
+										+ "SELECT mun, M.id "
+										+ "FROM (SELECT id, mun "
+										+ "		 FROM hpq_hh) H "
+										+ "INNER JOIN(SELECT id "
+										+ "           FROM hpq_mem "
+										+ "           WHERE reln = 1 AND age_yr BETWEEN 15 AND 30) M "
+										+ "ON H.id = M.id "
+										+ "GROUP BY H.mun, H.id;");
+		Connection connection = MySQLConnector.getConnection();
+		String query = 
+				"SELECT H.mun, H.id, C.croptype, C.croptype_o, C.crop_vol "
+				+ "FROM query6view H "
+				+ "INNER JOIN hpq_crop C "
+				+ "ON H.id = C.hpq_hh_id "
+				+ "WHERE C.crop_vol < (SELECT AVG(crop_vol) "
+				+ "                    FROM hpq_crop ) "
+				+ "GROUP BY H.mun, H.id;";
+		
+		ArrayList<Query> results = new ArrayList<Query>();
+		PreparedStatement ps;
+		ResultSet rs;
+		executor.reset();
+		try {
+			ps = connection.prepareStatement(query);
+			rs = executor.executeQuery(nTimes, ps);
+			while(rs.next()) {
+				Query6 result = new Query6(rs.getInt(1),rs.getInt(2), rs.getInt(3), rs.getString(4), rs.getInt(5));
+				results.add(result);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		MySQLConnector.executeStatement("DROP TABLE query6view;");
+		return results;
 	}
 	
 	public ArrayList<Query> query6(int nTimes, String cropType) {
-		// TODO Auto-generated method stub
-		return null;
+		
+		cropType = cropType.toLowerCase().trim();
+		int nCroptype = 4;
+		if(cropType.equals("sugar cane")) {
+			nCroptype = 1;
+		} else if(cropType.equals("palay")) {
+			nCroptype = 2;
+		} else if(cropType.equals("corn")) {
+			nCroptype = 3;
+		}
+		
+		MySQLConnector.executeStatement("CREATE TABLE query6view (mun INT, id INT);");
+		MySQLConnector.executeStatement("INSERT INTO query6view "
+										+ "SELECT mun, M.id "
+										+ "FROM (SELECT id, mun "
+										+ "		 FROM hpq_hh) H "
+										+ "INNER JOIN(SELECT id "
+										+ "           FROM hpq_mem "
+										+ "           WHERE reln = 1 AND age_yr BETWEEN 15 AND 30) M "
+										+ "ON H.id = M.id "
+										+ "GROUP BY H.mun, H.id;");
+		Connection connection = MySQLConnector.getConnection();
+		String query = 
+				"SELECT H.mun, H.id, C.croptype, C.croptype_o, C.crop_vol "
+				+ "FROM query6view H "
+				+ "INNER JOIN hpq_crop C "
+				+ "ON H.id = C.hpq_hh_id "
+				+ "WHERE "
+				+ 			((nCroptype == 4)? 
+						    "croptype = 4 AND croptype_o LIKE '%" + cropType + "%' " :
+					        "croptype = " + nCroptype + " ")  
+				+ "AND C.crop_vol < (SELECT AVG(crop_vol) "
+				+ "                  FROM hpq_crop "
+				+ "                  WHERE " 
+				+ 					((nCroptype == 4)? 
+								     "croptype = 4 AND croptype_o LIKE '%" + cropType + "%' )" :
+									 "croptype = " + nCroptype + " ) ") 
+				+ "GROUP BY H.mun, H.id;";
+		
+		ArrayList<Query> results = new ArrayList<Query>();
+		PreparedStatement ps;
+		ResultSet rs;
+		executor.reset();
+		try {
+			ps = connection.prepareStatement(query);
+			rs = executor.executeQuery(nTimes, ps);
+			while(rs.next()) {
+				Query6 result = new Query6(rs.getInt(1),rs.getInt(2), rs.getInt(3), rs.getString(4), rs.getInt(5));
+				results.add(result);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		MySQLConnector.executeStatement("DROP TABLE query6view;");
+		return results;
 	}
 /*********************************************END QUERY 6********************************************************/
 /*******************************************START QUERY 7********************************************************/	
 				
 	@Override
 	public ArrayList<Query> query7(int nTimes) {
-		// TODO Auto-generated method stub
-		return null;
+	
+		MySQLConnector.executeStatement("CREATE TABLE query7view (mun INT, id INT, aquanitype INT, "
+										+ "aquanitype_o VARCHAR(255), aquani_vol INT, croptype INT, "
+										+ "croptype_o VARCHAR(255), crop_vol INT, monthly_income DOUBLE);");
+		MySQLConnector.executeStatement("INSERT INTO query7view "
+										+ "SELECT H.mun, H.id, aquanitype, aquanitype_o, aquani_vol,"
+										+ "       croptype, croptype_o, crop_vol, totin/12 AS monthly_income "
+										+ "FROM hpq_hh H, hpq_aquani A, hpq_crop C, hpq_mem M "
+										+ "WHERE H.id = M.id "
+										+ "AND H.id = A.hpq_hh_id AND H.id = C.hpq_hh_id "
+										+ "AND M.age_yr BETWEEN 15 AND 30 "
+										+ "AND M.reln = 1;");
+		Connection connection = MySQLConnector.getConnection();
+		String query = 
+				"SELECT mun, id, aquanitype, aquanitype_o, aquani_vol, croptype, croptype_o, crop_vol, monthly_income "
+				+ "FROM query7view "
+				+ "GROUP BY mun, id;";
+		
+		ArrayList<Query> results = new ArrayList<Query>();
+		PreparedStatement ps;
+		ResultSet rs;
+		executor.reset();
+		try {
+			ps = connection.prepareStatement(query);
+			rs = executor.executeQuery(nTimes, ps);
+			while(rs.next()) {
+				Query7 result = new Query7(rs.getInt(1), rs.getInt(2), rs.getInt(3), rs.getString(4), 
+						                   rs.getInt(5), rs.getInt(6), rs.getString(7), rs.getInt(8), 
+						                   rs.getDouble(9));
+				results.add(result);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		MySQLConnector.executeStatement("DROP TABLE query7view;");
+		return results;
 	}
 	
 	public ArrayList<Query> query7(int nTimes, double lowerBracket, double higherBracket) {
-		// TODO Auto-generated method stub
-		return null;
+		MySQLConnector.executeStatement("CREATE TABLE query7view (mun INT, id INT, aquanitype INT, "
+										+ "aquanitype_o VARCHAR(255), aquani_vol INT, croptype INT, "
+										+ "croptype_o VARCHAR(255), crop_vol INT, monthly_income DOUBLE);");
+		MySQLConnector.executeStatement("INSERT INTO query7view "
+										+ "SELECT H.mun, H.id, aquanitype, aquanitype_o, aquani_vol,"
+										+ "       croptype, croptype_o, crop_vol, totin/12 AS monthly_income "
+										+ "FROM hpq_hh H, hpq_aquani A, hpq_crop C, hpq_mem M "
+										+ "WHERE H.id = M.id "
+										+ "AND H.id = A.hpq_hh_id AND H.id = C.hpq_hh_id "
+										+ "AND M.age_yr BETWEEN 15 AND 30 "
+										+ "AND M.reln = 1;");
+		Connection connection = MySQLConnector.getConnection();
+		String query = 
+						"SELECT mun, id, aquanitype, aquanitype_o, aquani_vol, croptype, croptype_o, crop_vol, monthly_income "
+						+ "FROM query7view "
+						+ "GROUP BY mun, id "
+						+ "HAVING monthly_income BETWEEN "+lowerBracket+" AND "+higherBracket+";";
+		
+		ArrayList<Query> results = new ArrayList<Query>();
+		PreparedStatement ps;
+		ResultSet rs;
+		executor.reset();
+		
+		try {
+			ps = connection.prepareStatement(query);
+			rs = executor.executeQuery(nTimes, ps);
+			while(rs.next()) {
+				Query7 result = new Query7(rs.getInt(1), rs.getInt(2), rs.getInt(3), rs.getString(4), 
+				                   rs.getInt(5), rs.getInt(6), rs.getString(7), rs.getInt(8), 
+				                   rs.getDouble(9));
+				results.add(result);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		MySQLConnector.executeStatement("DROP TABLE query7view;");
+		return results;
 	}
 }
