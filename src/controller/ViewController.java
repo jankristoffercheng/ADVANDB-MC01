@@ -1,7 +1,12 @@
 package controller;
 
 
+import java.awt.BorderLayout;
 import java.util.ArrayList;
+
+import javax.swing.JFrame;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
 
 import dao.AbstractDAO;
 import dao.Heuristics;
@@ -48,10 +53,11 @@ public class ViewController {
 		observerList.add(observer);
 	}
 	
-	public void updateAllObservers(String[] columnNames, ArrayList<Query> results) {
+	public void updateAllObservers(String[] columnNames, ArrayList<Query> results, String queryName, String type) {
 		for(int i = 0 ; i < observerList.size(); i++)
 		{
-			observerList.get(i).update(columnNames, QueryToTable.convertQuery(columnNames, results));
+			observerList.get(i).update(columnNames, QueryToTable.convertQuery(columnNames, results),getDuration() ,queryName ,type);
+			
 		}
 	}
 	
@@ -64,27 +70,27 @@ public class ViewController {
 			case 1://Original
 				System.out.println("Query1 Original");
 				currentDAO = original;
-				updateAllObservers(Query1.COLUMN_NAMES, original.query1(nTimes));
+				updateAllObservers(Query1.COLUMN_NAMES, original.query1(nTimes), "Query 1", "Original");
 				break;
 			case 2://Heuristic
 				System.out.println("Query1 Heuristics");
 				currentDAO = heuristics;
-				updateAllObservers(Query1.COLUMN_NAMES, heuristics.query1(nTimes));
+				updateAllObservers(Query1.COLUMN_NAMES, heuristics.query1(nTimes), "Query 1", "Heuristics");
 				break;
 			case 3://Views
 				System.out.println("Query1 Views");
 				currentDAO = views;
-				updateAllObservers(Query1.COLUMN_NAMES, views.query1(nTimes));
+				updateAllObservers(Query1.COLUMN_NAMES, views.query1(nTimes), "Query 1", "Views");
 				break;
 			case 4://Indexed
 				System.out.println("Query1 Indexed");
 				currentDAO = indexed;
-				updateAllObservers(Query1.COLUMN_NAMES, indexed.query1(nTimes));
+				updateAllObservers(Query1.COLUMN_NAMES, indexed.query1(nTimes) ,"Query 1", "Indexed");
 				break;
 			case 5://Stored Procedures
 				System.out.println("Query1 Stored Procedures");
 				currentDAO = storedProcedures;
-				updateAllObservers(Query1.COLUMN_NAMES, storedProcedures.query1(nTimes));
+				updateAllObservers(Query1.COLUMN_NAMES, storedProcedures.query1(nTimes) ,"Query 1", "Stored Procedures");
 				break;
 			default:
 				break;
@@ -96,27 +102,27 @@ public class ViewController {
 			case 1://Original
 				System.out.println("Query1 Original");
 				currentDAO = original;
-				updateAllObservers(Query1.COLUMN_NAMES, original.query1(nTimes, isStudying));
+				updateAllObservers(Query1.COLUMN_NAMES, original.query1(nTimes, isStudying) , "Query 1", "Original");
 				break;
 			case 2://Heuristic
 				System.out.println("Query1 Heuristics");
 				currentDAO = heuristics;
-				updateAllObservers(Query1.COLUMN_NAMES, heuristics.query1(nTimes, isStudying));
+				updateAllObservers(Query1.COLUMN_NAMES, heuristics.query1(nTimes, isStudying) , "Query 1", "Heuristics");
 				break;
 			case 3://Views
 				System.out.println("Query1 Views");
 				currentDAO = views;
-				updateAllObservers(Query1.COLUMN_NAMES, views.query1(nTimes, isStudying));
+				updateAllObservers(Query1.COLUMN_NAMES, views.query1(nTimes, isStudying), "Query 1", "Views");
 				break;
 			case 4://Indexed
 				System.out.println("Query1 Indexed");
 				currentDAO = indexed;
-				updateAllObservers(Query1.COLUMN_NAMES, indexed.query1(nTimes, isStudying));
+				updateAllObservers(Query1.COLUMN_NAMES, indexed.query1(nTimes, isStudying) , "Query 1", "Indexed");
 				break;
 			case 5://Stored Procedures
 				System.out.println("Query1 Stored Procedures");
 				currentDAO = storedProcedures;
-				updateAllObservers(Query1.COLUMN_NAMES, storedProcedures.query1(nTimes, isStudying));
+				updateAllObservers(Query1.COLUMN_NAMES, storedProcedures.query1(nTimes, isStudying), "Query 1", "Stored Procedures");
 				break;
 			default:
 				break;
@@ -128,27 +134,27 @@ public class ViewController {
 		case 1://Original
 			System.out.println("Query2 Original");
 			currentDAO = original;
-			updateAllObservers(Query2.COLUMN_NAMES, original.query2(nTimes));
+			updateAllObservers(Query2.COLUMN_NAMES, original.query2(nTimes), "Query 2", "Original");
 			break;
 		case 2://Heuristic
 			System.out.println("Query2 Heuristics");
 			currentDAO = heuristics;
-			updateAllObservers(Query2.COLUMN_NAMES, heuristics.query2(nTimes));
+			updateAllObservers(Query2.COLUMN_NAMES, heuristics.query2(nTimes), "Query 2", "Heuristics");
 			break;
 		case 3://Views
 			System.out.println("Query2 Views");
 			currentDAO = views;
-			updateAllObservers(Query2.COLUMN_NAMES, views.query2(nTimes));
+			updateAllObservers(Query2.COLUMN_NAMES, views.query2(nTimes) , "Query 2", "Views");
 			break;
 		case 4://Indexed
 			System.out.println("Query2 Indexed");
 			currentDAO = indexed;
-			updateAllObservers(Query2.COLUMN_NAMES, indexed.query2(nTimes));
+			updateAllObservers(Query2.COLUMN_NAMES, indexed.query2(nTimes) , "Query 2", "Indexed");
 			break;
 		case 5://Stored Procedures
 			System.out.println("Query2 Stored Procedures");
 			currentDAO = storedProcedures;
-			updateAllObservers(Query2.COLUMN_NAMES, storedProcedures.query2(nTimes));
+			updateAllObservers(Query2.COLUMN_NAMES, storedProcedures.query2(nTimes), "Query 2", "Stored Procedures");
 			break;
 		default:
 			break;
@@ -160,27 +166,27 @@ public class ViewController {
 		case 1://Original
 			System.out.println("Query2 Original");
 			currentDAO = original;
-			updateAllObservers(Query2.COLUMN_NAMES, original.query2(nTimes, isStudying));
+			updateAllObservers(Query2.COLUMN_NAMES, original.query2(nTimes, isStudying) , "Query 2", "Original");
 			break;
 		case 2://Heuristic
 			System.out.println("Query2 Heuristics");
 			currentDAO = heuristics;
-			updateAllObservers(Query2.COLUMN_NAMES, heuristics.query2(nTimes, isStudying));
+			updateAllObservers(Query2.COLUMN_NAMES, heuristics.query2(nTimes, isStudying),  "Query 2", "Heuristics");
 			break;
 		case 3://Views
 			System.out.println("Query2 Views");
 			currentDAO = views;
-			updateAllObservers(Query2.COLUMN_NAMES, views.query2(nTimes, isStudying));
+			updateAllObservers(Query2.COLUMN_NAMES, views.query2(nTimes, isStudying),  "Query 2", "Heuristics");
 			break;
 		case 4://Indexed
 			System.out.println("Query2 Indexed");
 			currentDAO = indexed;
-			updateAllObservers(Query2.COLUMN_NAMES, indexed.query2(nTimes, isStudying));
+			updateAllObservers(Query2.COLUMN_NAMES, indexed.query2(nTimes, isStudying),  "Query 2", "Indexed");
 			break;
 		case 5://Stored Procedures
 			System.out.println("Query2 Stored Procedures");
 			currentDAO = storedProcedures;
-			updateAllObservers(Query2.COLUMN_NAMES, storedProcedures.query2(nTimes, isStudying));
+			updateAllObservers(Query2.COLUMN_NAMES, storedProcedures.query2(nTimes, isStudying),  "Query 2", "Stored Procedures");
 			break;
 		default:
 			break;
@@ -192,27 +198,27 @@ public class ViewController {
 		case 1://Original
 			System.out.println("Query3 Original");
 			currentDAO = original;
-			updateAllObservers(Query3.COLUMN_NAMES, original.query3(nTimes));
+			updateAllObservers(Query3.COLUMN_NAMES, original.query3(nTimes), "Query 3", "Original");
 			break;
 		case 2://Heuristic
 			System.out.println("Query3 Heuristics");
 			currentDAO = heuristics;
-			updateAllObservers(Query3.COLUMN_NAMES, heuristics.query3(nTimes));
+			updateAllObservers(Query3.COLUMN_NAMES, heuristics.query3(nTimes), "Query 3", "Heuristics");
 			break;
 		case 3://Views
 			System.out.println("Query3 Views");
 			currentDAO = views;
-			updateAllObservers(Query3.COLUMN_NAMES, views.query3(nTimes));
+			updateAllObservers(Query3.COLUMN_NAMES, views.query3(nTimes), "Query 3", "Views");
 			break;
 		case 4://Indexed
 			System.out.println("Query3 Indexed");
 			currentDAO = indexed;
-			updateAllObservers(Query3.COLUMN_NAMES, indexed.query3(nTimes));
+			updateAllObservers(Query3.COLUMN_NAMES, indexed.query3(nTimes), "Query 3", "Indexed");
 			break;
 		case 5://Stored Procedures
 			System.out.println("Query3 Stored Procedures");
 			currentDAO = storedProcedures;
-			updateAllObservers(Query3.COLUMN_NAMES, storedProcedures.query3(nTimes));
+			updateAllObservers(Query3.COLUMN_NAMES, storedProcedures.query3(nTimes),  "Query 3", "Stored Procedures");
 			break;
 		default:
 			break;
@@ -224,27 +230,27 @@ public class ViewController {
 		case 1://Original
 			System.out.println("Query3 Original");
 			currentDAO = original;
-			updateAllObservers(Query3.COLUMN_NAMES, original.query3(nTimes, memno, lowerBracket, higherBracket));
+			updateAllObservers(Query3.COLUMN_NAMES, original.query3(nTimes, memno, lowerBracket, higherBracket), "Query 3", "Original");
 			break;
 		case 2://Heuristic
 			System.out.println("Query3 Heuristics");
 			currentDAO = heuristics;
-			updateAllObservers(Query3.COLUMN_NAMES, heuristics.query3(nTimes, memno, lowerBracket, higherBracket));
+			updateAllObservers(Query3.COLUMN_NAMES, heuristics.query3(nTimes, memno, lowerBracket, higherBracket), "Query 3", "Heuristics");
 			break;
 		case 3://Views
 			System.out.println("Query3 Views");
 			currentDAO = views;
-			updateAllObservers(Query3.COLUMN_NAMES, views.query3(nTimes, memno, lowerBracket, higherBracket));
+			updateAllObservers(Query3.COLUMN_NAMES, views.query3(nTimes, memno, lowerBracket, higherBracket), "Query 3", "Views");
 			break;
 		case 4://Indexed
 			System.out.println("Query3 Indexed");
 			currentDAO = indexed;
-			updateAllObservers(Query3.COLUMN_NAMES, indexed.query3(nTimes, memno, lowerBracket, higherBracket));
+			updateAllObservers(Query3.COLUMN_NAMES, indexed.query3(nTimes, memno, lowerBracket, higherBracket), "Query 3", "Indexed");
 			break;
 		case 5://Stored Procedures
 			System.out.println("Query3 Stored Procedures");
 			currentDAO = storedProcedures;
-			updateAllObservers(Query3.COLUMN_NAMES, storedProcedures.query3(nTimes, memno, lowerBracket, higherBracket));
+			updateAllObservers(Query3.COLUMN_NAMES, storedProcedures.query3(nTimes, memno, lowerBracket, higherBracket), "Query 3", "Stored Procedures");
 			break;
 		default:
 			break;
@@ -256,27 +262,27 @@ public class ViewController {
 			case 1://Original
 				System.out.println("Query4 Original");
 				currentDAO = original;
-				updateAllObservers(Query4.COLUMN_NAMES, original.query4(nTimes));
+				updateAllObservers(Query4.COLUMN_NAMES, original.query4(nTimes), "Query 4", "Original");
 				break;
 			case 2://Heuristic
 				System.out.println("Query4 Heuristics");
 				currentDAO = heuristics;
-				updateAllObservers(Query4.COLUMN_NAMES, heuristics.query4(nTimes));
+				updateAllObservers(Query4.COLUMN_NAMES, heuristics.query4(nTimes), "Query 4", "Heuristics");
 				break;
 			case 3://Views
 				System.out.println("Query4 Views");
 				currentDAO = views;
-				updateAllObservers(Query4.COLUMN_NAMES, views.query4(nTimes));
+				updateAllObservers(Query4.COLUMN_NAMES, views.query4(nTimes), "Query 4", "Views");
 				break;
 			case 4://Indexed
 				System.out.println("Query4 Indexed");
 				currentDAO = indexed;
-				updateAllObservers(Query4.COLUMN_NAMES, indexed.query4(nTimes));
+				updateAllObservers(Query4.COLUMN_NAMES, indexed.query4(nTimes), "Query 4", "Indexed");
 				break;
 			case 5://Stored Procedures
 				System.out.println("Query4 Stored Procedures");
 				currentDAO = storedProcedures;
-				updateAllObservers(Query4.COLUMN_NAMES, storedProcedures.query4(nTimes));
+				updateAllObservers(Query4.COLUMN_NAMES, storedProcedures.query4(nTimes), "Query 4", "Stored Procedures");
 				break;
 			default:
 				break;
@@ -288,27 +294,27 @@ public class ViewController {
 		case 1://Original
 			System.out.println("Query4 Original");
 			currentDAO = original;
-			updateAllObservers(Query4.COLUMN_NAMES, original.query4(nTimes, isEmployed));
+			updateAllObservers(Query4.COLUMN_NAMES, original.query4(nTimes, isEmployed), "Query 4", "Original");
 			break;
 		case 2://Heuristic
 			System.out.println("Query4 Heuristics");
 			currentDAO = heuristics;
-			updateAllObservers(Query4.COLUMN_NAMES, heuristics.query4(nTimes, isEmployed));
+			updateAllObservers(Query4.COLUMN_NAMES, heuristics.query4(nTimes, isEmployed), "Query 4", "Heuristics");
 			break;
 		case 3://Views
 			System.out.println("Query4 Views");
 			currentDAO = views;
-			//updateAllObservers(Query4.COLUMN_NAMES, views.query4(nTimes, isEmployed));
+			//updateAllObservers(Query4.COLUMN_NAMES, views.query4(nTimes, isEmployed), "Query 4", "Views");
 			break;
 		case 4://Indexed
 			System.out.println("Query4 Indexed");
 			currentDAO = indexed;
-			//updateAllObservers(Query4.COLUMN_NAMES, indexed.query4(nTimes, isEmployed));
+			//updateAllObservers(Query4.COLUMN_NAMES, indexed.query4(nTimes, isEmployed), "Query 4", "Indexed");
 			break;
 		case 5://Stored Procedures
 			System.out.println("Query4 Stored Procedures");
 			currentDAO = storedProcedures;
-			//updateAllObservers(Query4.COLUMN_NAMES, storedProcedures.query4(nTimes, isEmployed));
+			//updateAllObservers(Query4.COLUMN_NAMES, storedProcedures.query4(nTimes, isEmployed), "Query 4", "Stored Procedures");
 			break;
 		default:
 			break;
@@ -320,27 +326,27 @@ public class ViewController {
 			case 1://Original
 				System.out.println("Query5 Original");
 				currentDAO = original;
-				updateAllObservers(Query5.COLUMN_NAMES, original.query5(nTimes));
+				updateAllObservers(Query5.COLUMN_NAMES, original.query5(nTimes), "Query 5", "Original");
 				break;
 			case 2://Heuristic
 				System.out.println("Query5 Heuristics");
 				currentDAO = heuristics;
-				updateAllObservers(Query5.COLUMN_NAMES, heuristics.query5(nTimes));
+				updateAllObservers(Query5.COLUMN_NAMES, heuristics.query5(nTimes), "Query 5", "Heuristics");
 				break;
 			case 3://Views
 				System.out.println("Query5 Views");
 				currentDAO = views;
-				updateAllObservers(Query5.COLUMN_NAMES, views.query5(nTimes));
+				updateAllObservers(Query5.COLUMN_NAMES, views.query5(nTimes), "Query 5", "Views");
 				break;
 			case 4://Indexed
 				System.out.println("Query5 Indexed");
 				currentDAO = indexed;
-				updateAllObservers(Query5.COLUMN_NAMES, indexed.query5(nTimes));
+				updateAllObservers(Query5.COLUMN_NAMES, indexed.query5(nTimes), "Query 5", "Indexed");
 				break;
 			case 5://Stored Procedures
 				System.out.println("Query5 Stored Procedures");
 				currentDAO = storedProcedures;
-				updateAllObservers(Query5.COLUMN_NAMES, storedProcedures.query5(nTimes));
+				updateAllObservers(Query5.COLUMN_NAMES, storedProcedures.query5(nTimes), "Query 5", "Stored Procedures");
 				break;
 			default:
 				break;
@@ -352,27 +358,27 @@ public class ViewController {
 			case 1://Original
 				System.out.println("Query5 Original");
 				currentDAO = original;
-				updateAllObservers(Query5.COLUMN_NAMES, original.query5(nTimes, fishType));
+				updateAllObservers(Query5.COLUMN_NAMES, original.query5(nTimes, fishType) , "Query 5", "Original");
 				break;
 			case 2://Heuristic
 				System.out.println("Query5 Heuristics");
 				currentDAO = heuristics;
-				updateAllObservers(Query5.COLUMN_NAMES, heuristics.query5(nTimes, fishType));
+				updateAllObservers(Query5.COLUMN_NAMES, heuristics.query5(nTimes, fishType) , "Query 5", "Heuristics");
 				break;
 			case 3://Views
 				System.out.println("Query5 Views");
 				currentDAO = views;
-				updateAllObservers(Query5.COLUMN_NAMES, views.query5(nTimes, fishType));
+				updateAllObservers(Query5.COLUMN_NAMES, views.query5(nTimes, fishType) , "Query 5", "Views");
 				break;
 			case 4://Indexed
 				System.out.println("Query5 Indexed");
 				currentDAO = indexed;
-				updateAllObservers(Query5.COLUMN_NAMES, indexed.query5(nTimes, fishType));
+				updateAllObservers(Query5.COLUMN_NAMES, indexed.query5(nTimes, fishType) , "Query 5", "Indexed");
 				break;
 			case 5://Stored Procedures
 				System.out.println("Query5 Stored Procedures");
 				currentDAO = storedProcedures;
-				updateAllObservers(Query5.COLUMN_NAMES, storedProcedures.query5(nTimes, fishType));
+				updateAllObservers(Query5.COLUMN_NAMES, storedProcedures.query5(nTimes, fishType) , "Query 5", "Stored Procedures");
 				break;
 			default:
 				break;
@@ -384,27 +390,27 @@ public class ViewController {
 			case 1://Original
 				System.out.println("Query6 Original");
 				currentDAO = original;
-				updateAllObservers(Query6.COLUMN_NAMES, original.query6(nTimes));
+				updateAllObservers(Query6.COLUMN_NAMES, original.query6(nTimes) , "Query 6", "Original");
 				break;
 			case 2://Heuristic
 				System.out.println("Query6 Heuristics");
 				currentDAO = heuristics;
-				updateAllObservers(Query6.COLUMN_NAMES, heuristics.query6(nTimes));
+				updateAllObservers(Query6.COLUMN_NAMES, heuristics.query6(nTimes) , "Query 6", "Heuristics");
 				break;
 			case 3://Views
 				System.out.println("Query6 Views");
 				currentDAO = views;
-				updateAllObservers(Query6.COLUMN_NAMES, views.query6(nTimes));
+				updateAllObservers(Query6.COLUMN_NAMES, views.query6(nTimes) , "Query 6", "Views");
 				break;
 			case 4://Indexed
 				System.out.println("Query6 Indexed");
 				currentDAO = indexed;
-				updateAllObservers(Query6.COLUMN_NAMES, indexed.query6(nTimes));
+				updateAllObservers(Query6.COLUMN_NAMES, indexed.query6(nTimes) , "Query 6", "Indexed");
 				break;
 			case 5://Stored Procedures
 				System.out.println("Query6 Stored Procedures");
 				currentDAO = storedProcedures;
-				updateAllObservers(Query6.COLUMN_NAMES, storedProcedures.query6(nTimes));
+				updateAllObservers(Query6.COLUMN_NAMES, storedProcedures.query6(nTimes) , "Query 6", "Stored Procedures");
 				break;
 			default:
 				break;
@@ -416,27 +422,27 @@ public class ViewController {
 			case 1://Original
 				System.out.println("Query6 Original");
 				currentDAO = original;
-				updateAllObservers(Query6.COLUMN_NAMES, original.query6(nTimes, cropType));
+				updateAllObservers(Query6.COLUMN_NAMES, original.query6(nTimes, cropType), "Query 6", "Original");
 				break;
 			case 2://Heuristic
 				System.out.println("Query6 Heuristics");
 				currentDAO = heuristics;
-				updateAllObservers(Query6.COLUMN_NAMES, heuristics.query6(nTimes, cropType));
+				updateAllObservers(Query6.COLUMN_NAMES, heuristics.query6(nTimes, cropType), "Query 6", "Heuristics");
 				break;
 			case 3://Views
 				System.out.println("Query6 Views");
 				currentDAO = views;
-				updateAllObservers(Query6.COLUMN_NAMES, views.query6(nTimes, cropType));
+				updateAllObservers(Query6.COLUMN_NAMES, views.query6(nTimes, cropType), "Query 6", "Views");
 				break;
 			case 4://Indexed
 				System.out.println("Query6 Indexed");
 				currentDAO = indexed;
-				updateAllObservers(Query6.COLUMN_NAMES, indexed.query6(nTimes, cropType));
+				updateAllObservers(Query6.COLUMN_NAMES, indexed.query6(nTimes, cropType), "Query 6", "Indexed");
 				break;
 			case 5://Stored Procedures
 				System.out.println("Query6 Stored Procedures");
 				currentDAO = storedProcedures;
-				updateAllObservers(Query6.COLUMN_NAMES, storedProcedures.query6(nTimes, cropType));
+				updateAllObservers(Query6.COLUMN_NAMES, storedProcedures.query6(nTimes, cropType), "Query 6", "Stored Procedures");
 				break;
 			default:
 				break;
@@ -448,27 +454,27 @@ public class ViewController {
 			case 1://Original
 				System.out.println("Query7 Original");
 				currentDAO = original;
-				updateAllObservers(Query7.COLUMN_NAMES, original.query7(nTimes));
+				updateAllObservers(Query7.COLUMN_NAMES, original.query7(nTimes), "Query 7", "Original");
 				break;
 			case 2://Heuristic
 				System.out.println("Query7 Heuristics");
 				currentDAO = heuristics;
-				updateAllObservers(Query7.COLUMN_NAMES, heuristics.query7(nTimes));
+				updateAllObservers(Query7.COLUMN_NAMES, heuristics.query7(nTimes), "Query 7", "Heuristics");
 				break;
 			case 3://Views
 				System.out.println("Query7 Views");
 				currentDAO = views;
-				updateAllObservers(Query7.COLUMN_NAMES, views.query7(nTimes));
+				updateAllObservers(Query7.COLUMN_NAMES, views.query7(nTimes), "Query 7", "Views");
 				break;
 			case 4://Indexed
 				System.out.println("Query7 Indexed");
 				currentDAO = indexed;
-				updateAllObservers(Query7.COLUMN_NAMES, indexed.query7(nTimes));
+				updateAllObservers(Query7.COLUMN_NAMES, indexed.query7(nTimes), "Query 7", "Indexed");
 				break;
 			case 5://Stored Procedures
 				System.out.println("Query7 Stored Procedures");
 				currentDAO = storedProcedures;
-				updateAllObservers(Query7.COLUMN_NAMES, storedProcedures.query7(nTimes));
+				updateAllObservers(Query7.COLUMN_NAMES, storedProcedures.query7(nTimes), "Query 7", "Stored Procedures");
 				break;
 			default:
 				break;
@@ -480,27 +486,27 @@ public class ViewController {
 			case 1://Original
 				System.out.println("Query7 Original");
 				currentDAO = original;
-				updateAllObservers(Query7.COLUMN_NAMES, original.query7(nTimes, lowerBracket, higherBracket));
+				updateAllObservers(Query7.COLUMN_NAMES, original.query7(nTimes, lowerBracket, higherBracket), "Query 7", "Original");
 				break;
 			case 2://Heuristic
 				System.out.println("Query7 Heuristics");
 				currentDAO = heuristics;
-				//updateAllObservers(Query7.COLUMN_NAMES, heuristics.query7(nTimes, lowerBracket, higherBracket));
+				//updateAllObservers(Query7.COLUMN_NAMES, heuristics.query7(nTimes, lowerBracket, higherBracket), "Query 7", "Heursitics");
 				break;
 			case 3://Views
 				System.out.println("Query7 Views");
 				currentDAO = views;
-				//updateAllObservers(Query7.COLUMN_NAMES, views.query7(nTimes, lowerBracket, higherBracket));
+				//updateAllObservers(Query7.COLUMN_NAMES, views.query7(nTimes, lowerBracket, higherBracket), "Query 7", "Views");
 				break;
 			case 4://Indexed
 				System.out.println("Query7 Indexed");
 				currentDAO = indexed;
-				//updateAllObservers(Query7.COLUMN_NAMES, indexed.query7(nTimes, lowerBracket, higherBracket));
+				//updateAllObservers(Query7.COLUMN_NAMES, indexed.query7(nTimes, lowerBracket, higherBracket), "Query 7", "Indexed");
 				break;
 			case 5://Stored Procedures
 				System.out.println("Query7 Stored Procedures");
 				currentDAO = storedProcedures;
-				//updateAllObservers(Query7.COLUMN_NAMES, storedProcedures.query7(nTimes, lowerBracket, higherBracket));
+				//updateAllObservers(Query7.COLUMN_NAMES, storedProcedures.query7(nTimes, lowerBracket, higherBracket), "Query 7", "Stored Procedures");
 				break;
 			default:
 				break;
