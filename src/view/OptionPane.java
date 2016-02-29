@@ -1,16 +1,23 @@
 package view;
 
+import java.awt.Component;
+
 import javax.swing.JDialog;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 public class OptionPane extends JOptionPane {
-	JDialog frame;
-	Object[] options =  {"Filter", "No Filter"};;
+	Component frame;
+	Object[] options =  {"Filter", "No Filter"};
 	public OptionPane(JDialog frame) {
 		this.frame = frame;
 		setVisible(true);
 	}
 	
+	public OptionPane(JFrame comp) {
+		this.frame = comp;
+		setVisible(true);
+	}
 	public int getResult(){
 		return showOptionDialog(frame,
 			    "Filter or No Filter?",	

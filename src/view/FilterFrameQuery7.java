@@ -50,11 +50,11 @@ public class FilterFrameQuery7 extends JDialog {
 				// TODO Auto-generated method stub
 				if(tfUpperBracket.getText().equals("Upper Bracket") && tfLowerBracket.getText().equals("Lower Bracket"))
 				{
-					ViewController.getInstance().getQuery7(type, (Integer)spinNumQueries.getValue());
+					ViewController.getInstance().getQuery7(type, (Integer)spinNumQueries.getValue(), true);
 				}
 				else 
 				{
-					ViewController.getInstance().getQuery7(type, (Integer)spinNumQueries.getValue(), Double.parseDouble(tfLowerBracket.getText().toString()), Double.parseDouble(tfUpperBracket.getText().toString()));
+					ViewController.getInstance().getQuery7(type, (Integer)spinNumQueries.getValue(), Double.parseDouble(tfLowerBracket.getText().toString()), Double.parseDouble(tfUpperBracket.getText().toString()), true);
 				}
 				dispose();
 			}

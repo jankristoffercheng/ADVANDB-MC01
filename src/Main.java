@@ -21,5 +21,6 @@ public class Main {
 		MainFrame mainFrame = new MainFrame();
 		TableCreationManager tcm = new TableCreationManager();
 		ViewController.getInstance().addObserver(tcm);
+		ViewController.getInstance().setFrame(mainFrame);
 	}
 }

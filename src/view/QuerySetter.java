@@ -11,6 +11,12 @@ public class QuerySetter {
 	private void setQueryCommand()
 	{
 		StringBuilder queryCommand = new StringBuilder();
+		
+		if(btnBlock.getLocation().x == 0 && btnBlock.getLocation().y == 0) {
+			this.btnBlock.setCommand("Summary");
+			
+		}
+		else{
 		switch(btnBlock.getLocation().x)
 		{
 			case 1: queryCommand.append("query1 ");
@@ -48,6 +54,7 @@ public class QuerySetter {
 		}
 		
 		this.btnBlock.setCommand(queryCommand.toString());
+		}
 	}
 	
 	

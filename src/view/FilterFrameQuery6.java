@@ -46,11 +46,11 @@ public class FilterFrameQuery6 extends JDialog {
 				// TODO Auto-generated method stub
 				if(!cmbCropType.getSelectedItem().toString().equals(""))
 				{
-					ViewController.getInstance().getQuery6(type, (Integer)spinNumQueries.getValue(), cmbCropType.getSelectedItem().toString());
+					ViewController.getInstance().getQuery6(type, (Integer)spinNumQueries.getValue(), cmbCropType.getSelectedItem().toString(), true);
 				}
 				else
 				{
-					ViewController.getInstance().getQuery6(type, (Integer)spinNumQueries.getValue());
+					ViewController.getInstance().getQuery6(type, (Integer)spinNumQueries.getValue(), true);
 				}
 				dispose();
 			}

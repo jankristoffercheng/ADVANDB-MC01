@@ -208,7 +208,7 @@ public class ButtonBlock extends JButton {
 				filterFrameQuery6 = new FilterFrameQuery6(5);
 			}
 		}
-		else 
+		else if(query.contains("query7"))
 		{
 			
 			if(query.contains("original"))
@@ -231,6 +231,38 @@ public class ButtonBlock extends JButton {
 			{
 				filterFrameQuery7 = new FilterFrameQuery7(5);
 			}
+		}
+		else
+		{
+			OptionPane optionPane = new OptionPane(ViewController.getInstance().getFrame());
+			
+			if(optionPane.getResult() == 1)
+			{
+				for(int i = 0 ; i < 6 ; i++)
+				{
+					ViewController.getInstance().getQuery1(i, 10, false); 
+					ViewController.getInstance().getQuery2(i, 10, false);
+					ViewController.getInstance().getQuery3(i, 10, false);
+					ViewController.getInstance().getQuery4(i, 10, false);
+					ViewController.getInstance().getQuery5(i, 10, false);
+					ViewController.getInstance().getQuery6(i, 10, false);
+					ViewController.getInstance().getQuery7(i, 10, false);
+				}
+			}
+			else {
+				for(int i = 0 ; i < 6; i++) {
+					ViewController.getInstance().getQuery1(i, 10, true, false);
+					ViewController.getInstance().getQuery2(i, 10, true, false);
+					ViewController.getInstance().getQuery3(i, 10, 1, 10000.00, 60000.00, false);
+					ViewController.getInstance().getQuery4(i, 10, true, false);
+					ViewController.getInstance().getQuery5(i, 10, "Carp", false);
+					ViewController.getInstance().getQuery6(i, 10, "Palay", false);
+					ViewController.getInstance().getQuery7(i, 10, 10000.00, 60000.00, false);
+				}
+			
+			}
+			ViewController.getInstance().getSummary();
+			System.out.println("Summary");
 		}
 		
 	}

@@ -71,13 +71,13 @@ public class FilterFrameQuery3 extends JDialog {
 				// TODO Auto-generated method stub
 				if(tfLowerBracket.getText().equals("Lower Bracket") || tfUpperBracket.getText().equals("Upper Bracket") || ((Integer)spinNoPeople.getValue()) == 0)
 				{
-					ViewController.getInstance().getQuery3(type, (Integer)spinNumQueries.getValue());
+					ViewController.getInstance().getQuery3(type, (Integer)spinNumQueries.getValue(), true);
 					System.out.println("Pass1");
 				}
 				else
 				{
 					System.out.println("Pass2");
-					ViewController.getInstance().getQuery3(type, (Integer)spinNumQueries.getValue(), (Integer)spinNoPeople.getValue(), Double.parseDouble(tfLowerBracket.getText()), Double.parseDouble(tfUpperBracket.getText()));
+					ViewController.getInstance().getQuery3(type, (Integer)spinNumQueries.getValue(), (Integer)spinNoPeople.getValue(), Double.parseDouble(tfLowerBracket.getText()), Double.parseDouble(tfUpperBracket.getText()), true);
 				}
 				dispose();
 			}

@@ -46,11 +46,11 @@ public class FilterFrameQuery4 extends JDialog {
 				OptionPane optionPane = new OptionPane(getThis());
 				
 				if(optionPane.getResult() == 0) {
-					ViewController.getInstance().getQuery4(type, (Integer) spinNumQueries.getValue(), cbEmployed.isSelected());
+					ViewController.getInstance().getQuery4(type, (Integer) spinNumQueries.getValue(), cbEmployed.isSelected(), true);
 				}
 				else
 				{
-					ViewController.getInstance().getQuery4(type, (Integer) spinNumQueries.getValue());
+					ViewController.getInstance().getQuery4(type, (Integer) spinNumQueries.getValue(), true);
 				}
 				dispose();
 			}
