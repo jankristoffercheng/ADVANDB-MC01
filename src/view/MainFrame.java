@@ -59,42 +59,46 @@ public class MainFrame extends JFrame {
 
 	
 	public void initializeButtonArray() {
-		buttonArray = new ButtonBlock[8][6];
+		buttonArray = new ButtonBlock[7][6];
 		for(int i = 0 ; i < 7 ; i++) {
 			for(int j = 0 ; j < 6; j++) {
-				if(j == 0)
+				if(!(i == 0 && j == 0))
 				{
-					buttonArray[i][j] = new ButtonBlock("Query" + String.valueOf(i), i , j );
-					buttonArray[i][j].setEnabled(false);
-				}
-				
-				if(i == 0)
-				{
-					String value = "";
-					switch(j)
+					if(j == 0)
 					{
-						case 1: value = "Original";
-							break;
-						case 2: value = "Heuristics";
-							break;
-						case 3: value = "Views";
-							break;
-						case 4: value = "Indexed";
-							break;
-						case 5: value = "Stored Procedures";
-							break;
-						default:
-							break;
+						buttonArray[i][j] = new ButtonBlock("Query" + String.valueOf(i), i , j );
+						buttonArray[i][j].setEnabled(false);
 					}
-					buttonArray[i][j] = new ButtonBlock(value, i , j );
-					buttonArray[i][j].setEnabled(false);
+					
+					if(i == 0)
+					{
+						String value = "";
+						switch(j)
+						{
+							case 1: value = "Original";
+								break;
+							case 2: value = "Heuristics";
+								break;
+							case 3: value = "Views";
+								break;
+							case 4: value = "Indexed";
+								break;
+							case 5: value = "Stored Procedures";
+								break;
+							default:
+								break;
+						}
+						buttonArray[i][j] = new ButtonBlock(value, i , j );
+						buttonArray[i][j].setEnabled(false);
+					}
+					
+					else if(j != 0 && i != 0)
+					{
+						buttonArray[i][j] = new ButtonBlock("Execute Query",i,j);
+						buttonArray[i][j] = QuerySetter.searchContext(buttonArray[i][j]);
+					}
 				}
-				
-				else if(j != 0 && i != 0)
-				{
-					buttonArray[i][j] = new ButtonBlock("Execute Query",i,j);
-					buttonArray[i][j] = QuerySetter.searchContext(buttonArray[i][j]);
-				}
+				else buttonArray[i][j] = new ButtonBlock("Summary", i , j );
 				gridPanel.add(buttonArray[i][j]);
 			}
 		}

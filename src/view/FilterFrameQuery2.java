@@ -42,11 +42,14 @@ public class FilterFrameQuery2 extends JDialog {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				// TODO Auto-generated method stub
-				if(cbMember.isSelected()){
-					ViewController.getInstance().getQuery2(type, (Integer)spinNumQueries.getValue(), true);
+				
+				OptionPane optionPane = new OptionPane(getThis());
+				
+				if(optionPane.getResult() == 0){
+					ViewController.getInstance().getQuery2(type, (Integer)spinNumQueries.getValue(), cbMember.isSelected(), true);
 				}
 				else {
-					ViewController.getInstance().getQuery2(type, (Integer)spinNumQueries.getValue());
+					ViewController.getInstance().getQuery2(type, (Integer)spinNumQueries.getValue(), true);
 	
 				}
 				dispose(); 
@@ -54,7 +57,7 @@ public class FilterFrameQuery2 extends JDialog {
 			
 		});
 		
-		Integer value = new Integer(1);
+		Integer value = new Integer(10);
 		Integer max = Integer.MAX_VALUE;
 		Integer min = new Integer(1);
 		Integer step = new Integer(1);
@@ -79,5 +82,10 @@ public class FilterFrameQuery2 extends JDialog {
 		setVisible(true);
 		repaint();
 		revalidate();
+	}
+	
+	private JDialog getThis()
+	{
+		return this;
 	}
 }

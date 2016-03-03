@@ -21,6 +21,7 @@ import controller.ViewController;
 public class FilterFrameQuery3 extends JDialog {
 	
 	SpinnerNumberModel numModel;
+	SpinnerNumberModel numPeopleModel;
 	JLabel lblNumPeople;
 	JSpinner spinNoPeople;
 	JTextField tfLowerBracket;
@@ -43,12 +44,19 @@ public class FilterFrameQuery3 extends JDialog {
 		
 		getContentPane().setLayout(new BoxLayout(getContentPane(),BoxLayout.Y_AXIS));
 		
-		Integer value = new Integer(1);
+		Integer value = new Integer(10);
 		Integer max = Integer.MAX_VALUE;
 		Integer min = new Integer(1);
 		Integer step = new Integer(1);
 		numModel = new SpinnerNumberModel(value,min,max,step);
-		spinNoPeople = new JSpinner(numModel);
+		spinNumQueries = new JSpinner(numModel);
+		
+		Integer value1 = new Integer(0);
+		Integer max1 = Integer.MAX_VALUE;
+		Integer min1 = new Integer(0);
+		Integer step1 = new Integer(1);
+		numPeopleModel = new SpinnerNumberModel(value1,min1,max1,step1);
+		spinNoPeople = new JSpinner(numPeopleModel);
 		
 		
 		filterPanel = new JPanel(new GridLayout(2,4));
@@ -61,19 +69,20 @@ public class FilterFrameQuery3 extends JDialog {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				if(tfLowerBracket.getText().equals("Lower Bracket") && tfUpperBracket.getText().equals("Upper Bracket"))
+				if(tfLowerBracket.getText().equals("Lower Bracket") || tfUpperBracket.getText().equals("Upper Bracket") || ((Integer)spinNoPeople.getValue()) == 0)
 				{
-					ViewController.getInstance().getQuery3(type, (Integer)spinNumQueries.getValue());
+					ViewController.getInstance().getQuery3(type, (Integer)spinNumQueries.getValue(), true);
+					System.out.println("Pass1");
 				}
 				else
 				{
-					ViewController.getInstance().getQuery3(type, (Integer)spinNumQueries.getValue(), (Integer)spinNoPeople.getValue(), Double.parseDouble(tfLowerBracket.getText()), Double.parseDouble(tfUpperBracket.getText()));
+					System.out.println("Pass2");
+					ViewController.getInstance().getQuery3(type, (Integer)spinNumQueries.getValue(), (Integer)spinNoPeople.getValue(), Double.parseDouble(tfLowerBracket.getText()), Double.parseDouble(tfUpperBracket.getText()), true);
 				}
 				dispose();
 			}
 			
 		});
-		spinNumQueries = new JSpinner(numModel);
 		filterPanel.add(lblNumPeople);
 		filterPanel.add(spinNoPeople);
 		filterPanel.add(tfLowerBracket);
@@ -94,5 +103,10 @@ public class FilterFrameQuery3 extends JDialog {
 		setVisible(true);
 		repaint();
 		revalidate();
+	}
+	
+	private JDialog getThis()
+	{
+		return this;
 	}
 }

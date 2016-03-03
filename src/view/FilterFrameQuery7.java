@@ -50,11 +50,11 @@ public class FilterFrameQuery7 extends JDialog {
 				// TODO Auto-generated method stub
 				if(tfUpperBracket.getText().equals("Upper Bracket") && tfLowerBracket.getText().equals("Lower Bracket"))
 				{
-					ViewController.getInstance().getQuery7(type, (Integer)spinNumQueries.getValue());
+					ViewController.getInstance().getQuery7(type, (Integer)spinNumQueries.getValue(), true);
 				}
 				else 
 				{
-					ViewController.getInstance().getQuery7(type, (Integer)spinNumQueries.getValue(), Double.parseDouble(tfLowerBracket.getText().toString()), Double.parseDouble(tfUpperBracket.getText().toString()));
+					ViewController.getInstance().getQuery7(type, (Integer)spinNumQueries.getValue(), Double.parseDouble(tfLowerBracket.getText().toString()), Double.parseDouble(tfUpperBracket.getText().toString()), true);
 				}
 				dispose();
 			}
@@ -64,7 +64,7 @@ public class FilterFrameQuery7 extends JDialog {
 		filterPanel.add(tfUpperBracket);
 		
 
-		Integer value = new Integer(1);
+		Integer value = new Integer(10);
 		Integer max = Integer.MAX_VALUE;
 		Integer min = new Integer(1);
 		Integer step = new Integer(1);
@@ -85,5 +85,10 @@ public class FilterFrameQuery7 extends JDialog {
 		setVisible(true);
 		repaint();
 		revalidate();
+	}
+	
+	private JDialog getThis()
+	{
+		return this;
 	}
 }

@@ -11,21 +11,27 @@ public class QuerySetter {
 	private void setQueryCommand()
 	{
 		StringBuilder queryCommand = new StringBuilder();
+		
+		if(btnBlock.getLocation().x == 0 && btnBlock.getLocation().y == 0) {
+			this.btnBlock.setCommand("Summary");
+			
+		}
+		else{
 		switch(btnBlock.getLocation().x)
 		{
-			case 0: queryCommand.append("query1 ");
+			case 1: queryCommand.append("query1 ");
 				break;
-			case 1: queryCommand.append("query2 ");
+			case 2: queryCommand.append("query2 ");
 				break;
-			case 2: queryCommand.append("query3 ");
+			case 3: queryCommand.append("query3 ");
 				break;
-			case 3: queryCommand.append("query4 ");
+			case 4: queryCommand.append("query4 ");
 				break;
-			case 4: queryCommand.append("query5 ");
+			case 5: queryCommand.append("query5 ");
 				break;
-			case 5: queryCommand.append("query6 ");
+			case 6: queryCommand.append("query6 ");
 				break;
-			case 6: queryCommand.append("query7 ");
+			case 7: queryCommand.append("query7 ");
 				break;
 			default: 
 				break;
@@ -33,21 +39,22 @@ public class QuerySetter {
 		
 		switch(btnBlock.getLocation().y)
 		{
-			case 0: queryCommand.append("original");
+			case 1: queryCommand.append("original");
 				break;
-			case 1: queryCommand.append("heuristics");
+			case 2: queryCommand.append("heuristics");
 				break;
-			case 2: queryCommand.append("views");
+			case 3: queryCommand.append("views");
 				break;
-			case 3: queryCommand.append("indexed");
+			case 4: queryCommand.append("indexed");
 				break;
-			case 4: queryCommand.append("stored procedures");
+			case 5: queryCommand.append("stored procedures");
 				break;
 			default:
 				break;
 		}
 		
 		this.btnBlock.setCommand(queryCommand.toString());
+		}
 	}
 	
 	
